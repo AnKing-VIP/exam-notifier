@@ -33,28 +33,34 @@
 Module template.
 """
 
+
 from anki.hooks import addHook
 from aqt import mw
+from aqt.reviewer import Reviewer
 from aqt.utils import tooltip
-from anki.utils import convertSecondsTo
 from datetime import datetime, timedelta
 
 from .config import config
 
-def onQuestionShown(reviewer=None):
-    if reviewer is None:  # <2.1.20
-        reviewer = mw.reviewer
-    
+try:  # >= 2.1.21
+    from anki.consts import QUEUE_TYPE_REV
+except (ImportError, ModuleNotFoundError, AttributeError):
+    QUEUE_TYPE_REV = 2
+
+
+def onQuestionShown(*args, **kwargs):
+    reviewer: Reviewer = mw.reviewer
+
     try:
         sched = mw.col.sched
         card = reviewer.card
     except AttributeError:
-        return
-    
-    if card.queue != 2:
+        raise
+
+    if card.queue != QUEUE_TYPE_REV:
         # not a review card
         return
-    
+
     try:
         exam_date_str = config["local"]["exam_date"]
     except KeyError:
@@ -62,30 +68,39 @@ def onQuestionShown(reviewer=None):
 
     if not exam_date_str:
         return
-    
-    
-    nextIvl = convertSecondsTo(sched.nextIvl(card, 2), "days")  # next ivl for "good"
-    
+
+    ease_good = reviewer._defaultEase()
+
+    # next ivl for "good"
+    nextIvl = sched.nextIvl(card, ease_good) / 86400
+
     try:
         date_obj_exam = datetime.strptime(exam_date_str, "%Y/%m/%d")
     except ValueError:
         return
-    
+
     date_obj_next = datetime.now() + timedelta(days=nextIvl)
-    
+
     if date_obj_next < date_obj_exam:
         return
-    
+
     days_after = (date_obj_next - date_obj_exam).days
-    
+
+    # TODO: use mw.col.sched.answerButtons(card) to check for hard and easy
+
     tooltip(
-        f"Warning: If you answer this card with good you will see it "
-        f"{days_after} days after the exam")
+        f"""
+<b>Exam Notifier</b><br>
+If you answer this card with <span style="color:green;">Good</span><br>you will
+see it {days_after} days after your exam.
+"""
+    )
 
 
 def initializeTooltip():
     try:  # >=2.1.20
         from aqt import gui_hooks
+
         gui_hooks.reviewer_did_show_question.append(onQuestionShown)
-    except (ImportError, AttributeError):
+    except (ImportError, ModuleNotFoundError, AttributeError):
         addHook("showQuestion", onQuestionShown)
