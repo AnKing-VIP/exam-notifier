@@ -84,4 +84,8 @@ def onQuestionShown():
 
 
 def initializeTooltip():
-    addHook("showQuestion", onQuestionShown)
+    try:  # >=2.1.20
+        from aqt import gui_hooks
+        gui_hooks.reviewer_did_show_question.append(onQuestionShown)
+    except (ImportError, AttributeError):
+        addHook("showQuestion", onQuestionShown)
