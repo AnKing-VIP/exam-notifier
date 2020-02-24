@@ -41,10 +41,13 @@ from datetime import datetime, timedelta
 
 from .config import config
 
-def onQuestionShown():
+def onQuestionShown(reviewer=None):
+    if reviewer is None:  # <2.1.20
+        reviewer = mw.reviewer
+    
     try:
         sched = mw.col.sched
-        card = mw.reviewer.card
+        card = reviewer.card
     except:
         return
     
