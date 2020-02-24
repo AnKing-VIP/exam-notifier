@@ -18,7 +18,21 @@ If you enjoy Exam Notifier, please consider supporting my work on Patreon, or by
 
 ### Added
 
+- Super simple configuration via the deck options dialog
+- Support for setting a custom exam name
+- Support for toggling notifications on or off
+
+### Changed
+
+- Improved tooltip message and styling
+- Future-proofed the add-on for upcoming Anki releases
+
+## 0.1.0-alpha.1 - 2019-07-11
+
+### Added
+
 - Initial release of Exam Notifier
+- This add-on was originally conceptualized during a mini hackathon with the [AnKing team](https://www.ankingmed.com/). All credit for the original idea for goes to them.
 
 [Unreleased]: https://github.com/glutanimate/exam-notifier/compare/v0.2.0-beta.1...HEAD
 [0.2.0-beta.1]: https://github.com/glutanimate/exam-notifier/compare/v0.0.0...v0.2.0-beta.1
