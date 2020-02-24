@@ -96,9 +96,9 @@ def initializeAddon():
 
     setAddonProperties(ADDON)
 
-    from .libaddon.debug import maybeStartDebugging
+    # from .libaddon.debug import maybeStartDebugging
 
-    maybeStartDebugging()
+    # maybeStartDebugging()
 
     from .tooltip import initializeTooltip
 
