@@ -12,11 +12,16 @@ If you enjoy Exam Notifier, please consider supporting my work on Patreon, or by
 
 ## [Unreleased]
 
+## [0.2.0-beta.1] - 2020-02-24
+
+### [Download](https://github.com/glutanimate/exam-notifier/releases/tag/v0.2.0-beta.1)
+
 ### Added
 
 - Initial release of Exam Notifier
 
-[Unreleased]: https://github.com/glutanimate/exam-notifier/compare/v0.0.0...HEAD
+[Unreleased]: https://github.com/glutanimate/exam-notifier/compare/v0.2.0-beta.1...HEAD
+[0.2.0-beta.1]: https://github.com/glutanimate/exam-notifier/compare/v0.0.0...v0.2.0-beta.1
 
 -----
 
