@@ -48,7 +48,7 @@ def onQuestionShown(reviewer=None):
     try:
         sched = mw.col.sched
         card = reviewer.card
-    except:
+    except AttributeError:
         return
     
     if card.queue != 2:
@@ -57,7 +57,7 @@ def onQuestionShown(reviewer=None):
     
     try:
         exam_date_str = config["local"]["exam_date"]
-    except:
+    except KeyError:
         return
 
     if not exam_date_str:
@@ -68,7 +68,7 @@ def onQuestionShown(reviewer=None):
     
     try:
         date_obj_exam = datetime.strptime(exam_date_str, "%Y/%m/%d")
-    except:
+    except ValueError:
         return
     
     date_obj_next = datetime.now() + timedelta(days=nextIvl)
