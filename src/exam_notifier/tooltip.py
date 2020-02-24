@@ -33,9 +33,6 @@
 Module template.
 """
 
-from __future__ import (absolute_import, division,
-                        print_function, unicode_literals)
-
 from anki.hooks import addHook
 from aqt import mw
 from aqt.utils import tooltip
