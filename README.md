@@ -83,7 +83,7 @@ Contributions are welcome! Please review the [contribution guidelines](./CONTRIB
 
 ### License and Credits
 
-*Exam Notifier* is *Copyright © 2019 [Aristotelis P.](https://glutanimate.com/) (Glutanimate)*
+*Exam Notifier* is *Copyright © 2019-2020 [Aristotelis P.](https://glutanimate.com/) (Glutanimate)*
 
 Exam Notifier is free and open-source software. The add-on code that runs within Anki is released under the GNU AGPLv3 license, extended by a number of additional terms. For more information please see the [LICENSE](https://github.com/glutanimate/exam-notifier/blob/master/LICENSE) file that accompanied this program.
 
