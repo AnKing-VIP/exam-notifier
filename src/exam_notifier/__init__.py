@@ -103,5 +103,9 @@ def initializeAddon():
     from .tooltip import initializeTooltip
 
     initializeTooltip()
+    
+    from .options import initializeOptions
+    
+    initializeOptions()
 
 initializeAddon()

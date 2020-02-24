@@ -30,17 +30,16 @@
 # Any modifications to this file must keep this entire header intact.
 
 """
-Module template.
+Reviewer tooltip
 """
 
+
+from datetime import datetime, timedelta
 
 from anki.hooks import addHook
 from aqt import mw
 from aqt.reviewer import Reviewer
 from aqt.utils import tooltip
-from datetime import datetime, timedelta
-
-from .config import config
 
 try:  # >= 2.1.21
     from anki.consts import QUEUE_TYPE_REV
@@ -61,12 +60,20 @@ def onQuestionShown(*args, **kwargs):
         # not a review card
         return
 
+    deck_options = mw.col.decks.confForDid(card.odid or card.did)
+
     try:
-        exam_date_str = config["local"]["exam_date"]
+        options = deck_options["examNotifier"]
     except KeyError:
         return
 
-    if not exam_date_str:
+    if not options["enable"] or not options["date"]:
+        return
+
+    datetime_now = datetime.now()
+    datetime_exam = datetime.fromtimestamp(options["date"])
+
+    if datetime_now > datetime_exam:
         return
 
     ease_good = reviewer._defaultEase()
@@ -74,26 +81,24 @@ def onQuestionShown(*args, **kwargs):
     # next ivl for "good"
     nextIvl = sched.nextIvl(card, ease_good) / 86400
 
-    try:
-        date_obj_exam = datetime.strptime(exam_date_str, "%Y/%m/%d")
-    except ValueError:
+    datetime_next_review = datetime.now() + timedelta(days=nextIvl)
+
+    if datetime_next_review < datetime_exam:
         return
 
-    date_obj_next = datetime.now() + timedelta(days=nextIvl)
-
-    if date_obj_next < date_obj_exam:
-        return
-
-    days_after = (date_obj_next - date_obj_exam).days
+    days_after = (datetime_next_review - datetime_exam).days
 
     # TODO: use mw.col.sched.answerButtons(card) to check for hard and easy
+
+    name_str = f" <b>{options['name']}</b>" if options["name"] else ""
 
     tooltip(
         f"""
 <b>Exam Notifier</b><br>
-If you answer this card with <span style="color:green;">Good</span><br>you will
-see it {days_after} days after your exam.
-"""
+If you answer this card with <span style="color:green;">Good</span> you will<br>
+see it <b>{days_after}</b> days after your{name_str} exam.
+""",
+        period=3000,
     )
 
 
