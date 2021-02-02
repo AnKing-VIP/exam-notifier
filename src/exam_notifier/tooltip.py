@@ -47,7 +47,7 @@ except (ImportError, ModuleNotFoundError, AttributeError):
     QUEUE_TYPE_REV = 2
 
 
-def onQuestionShown(*args, **kwargs):
+def on_question_shown(*args, **kwargs):
     reviewer: Reviewer = mw.reviewer
 
     try:
@@ -79,9 +79,9 @@ def onQuestionShown(*args, **kwargs):
     ease_good = reviewer._defaultEase()
 
     # next ivl for "good"
-    nextIvl = sched.nextIvl(card, ease_good) / 86400
+    next_ivl = sched.nextIvl(card, ease_good) / 86400
 
-    datetime_next_review = datetime.now() + timedelta(days=nextIvl)
+    datetime_next_review = datetime.now() + timedelta(days=next_ivl)
 
     if datetime_next_review < datetime_exam:
         return
@@ -102,10 +102,10 @@ see it <b>{days_after}</b> days after your{name_str} exam.
     )
 
 
-def initializeTooltip():
+def initialize_tooltip():
     try:  # >=2.1.20
         from aqt import gui_hooks
 
-        gui_hooks.reviewer_did_show_question.append(onQuestionShown)
+        gui_hooks.reviewer_did_show_question.append(on_question_shown)
     except (ImportError, ModuleNotFoundError, AttributeError):
-        addHook("showQuestion", onQuestionShown)
+        addHook("showQuestion", on_question_shown)

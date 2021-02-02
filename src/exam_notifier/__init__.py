@@ -39,7 +39,7 @@ from .libaddon import maybeVendorTyping
 
 maybeVendorTyping()
 
-def initializeAddon():
+def initialize_addon():
     """Initializes add-on after performing a few checks
     
     Allows more fine-grained control over add-on execution, which can
@@ -61,10 +61,10 @@ def initializeAddon():
 
     # maybeStartDebugging()
 
-    from .tooltip import initializeTooltip
-    from .options import initializeOptions
+    from .tooltip import initialize_tooltip
+    from .options import initialize_options
 
-    initializeTooltip()
-    initializeOptions()
+    initialize_tooltip()
+    initialize_options()
 
-initializeAddon()
+initialize_addon()

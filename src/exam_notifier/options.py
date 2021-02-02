@@ -122,7 +122,7 @@ def on_setup_ui(form, dialog):
     )
 
 
-def initializeOptions():
+def initialize_options():
     dconf.Ui_Dialog.setupUi = wrap(dconf.Ui_Dialog.setupUi, on_setup_ui)
     DeckConf.loadConf = wrap(DeckConf.loadConf, on_deck_conf_did_load_config)
     DeckConf.saveConf = wrap(DeckConf.saveConf, on_deck_conf_will_save_config, "before")

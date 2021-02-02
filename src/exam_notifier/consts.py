@@ -36,7 +36,7 @@ Addon-wide constants
 from ._version import __version__
 
 try:
-    from .data.patrons import MEMBERS_CREDITED, MEMBERS_TOP
+    from .data.patrons import MEMBERS_CREDITED, MEMBERS_TOP  # type: ignore
 except ImportError:
     MEMBERS_CREDITED = MEMBERS_TOP = ()
 
@@ -46,7 +46,7 @@ __all__ = [
 ]
 
 
-class ADDON(object):
+class ADDON:
     """Class storing general add-on properties
     Property names need to be all-uppercase with no leading underscores
     """
@@ -56,7 +56,7 @@ class ADDON(object):
     VERSION = __version__
     LICENSE = "GNU AGPLv3"
     AUTHORS = (
-        {"name": "Aristotelis P. (Glutanimate)", "years": "2019",
+        {"name": "Aristotelis P. (Glutanimate)", "years": "2019-2021",
          "contact": "Glutanimate"},
     )
     AUTHOR_MAIL = "ankiglutanimate@gmail.com"
