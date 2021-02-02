@@ -30,34 +30,54 @@
 # Any modifications to this file must keep this entire header intact.
 
 """
-Utilities for semantic version comparisons
+Simple dialog for viewing a web page
 """
-
-from .._vendor.packaging import version
 
 from typing import Optional
 
+from PyQt5.QtCore import QUrl
+from PyQt5.QtWebEngineWidgets import QWebEngineView  # type: ignore
+from PyQt5.QtWidgets import QVBoxLayout, QWidget
 
-def checkVersion(current: str, lower: str, upper: Optional[str] = None) -> bool:
-    """Generic version checker
+from aqt import mw
 
-    Checks whether specified version is in specified range
+from ..platform import PLATFORM
+from .basic.dialog_basic import BasicDialog
 
-    Arguments:
-        current {str} -- current version
-        lower {str} -- minimum version (inclusive)
+# TODO: Refactor
 
-    Keyword Arguments:
-        upper {str} -- maximum version (exclusive) (default: {None})
+class WebViewer(BasicDialog):
+    def __init__(
+        self,
+        url: str,
+        title: Optional[str] = None,
+        parent: Optional[QWidget] = None,
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+    ):
+        super().__init__(parent=parent)
+        self.setContentsMargins(0, 0, 0, 0)
+        if PLATFORM == "win":
+            self.setMinimumWidth(400)
+            self.setMinimumHeight(500)
+        else:
+            self.setMinimumWidth(500)
+            self.setMinimumHeight(600)
+        if title:
+            self.setWindowTitle(title)
+        if width and height:
+            self.resize(width, height)
+        self.setUrl(url)
 
-    Returns:
-        bool -- Whether current version is in specified range
-    """
+    def _setupUI(self):
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(layout)
+        self._browser = QWebEngineView(self)
+        layout.addWidget(self._browser)
 
-    if upper is not None:
-        current_parsed = version.parse(current)
-        return current_parsed >= version.parse(
-            lower
-        ) and current_parsed < version.parse(upper)
+    def setUrl(self, url: str):
+        self._browser.load(QUrl(url))
 
-    return version.parse(current) >= version.parse(lower)
+    def _onClose(self):
+        mw.gcWindow(self)
