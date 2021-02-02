@@ -83,7 +83,7 @@ Contributions are welcome! Please review the [contribution guidelines](./CONTRIB
 
 ### License and Credits
 
-*Exam Notifier* is *Copyright © 2019-2020 [Aristotelis P.](https://glutanimate.com/) (Glutanimate)*
+*Exam Notifier* is *Copyright © 2019-2021 [Aristotelis P.](https://glutanimate.com/) (Glutanimate)*
 
 All credits for the original idea for this add-on go to to [The AnKing](https://www.ankingmed.com/).
 
