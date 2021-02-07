@@ -36,15 +36,11 @@ Reviewer tooltip
 
 from datetime import datetime, timedelta
 
-from anki.hooks import addHook
 from aqt import mw
 from aqt.reviewer import Reviewer
 from aqt.utils import tooltip
 
-try:  # >= 2.1.21
-    from anki.consts import QUEUE_TYPE_REV
-except (ImportError, ModuleNotFoundError, AttributeError):
-    QUEUE_TYPE_REV = 2
+from anki.consts import QUEUE_TYPE_REV
 
 
 def on_question_shown(*args, **kwargs):
@@ -103,9 +99,6 @@ see it <b>{days_after}</b> days after your{name_str} exam.
 
 
 def initialize_tooltip():
-    try:  # >=2.1.20
-        from aqt import gui_hooks
+    from aqt import gui_hooks
 
-        gui_hooks.reviewer_did_show_question.append(on_question_shown)
-    except (ImportError, ModuleNotFoundError, AttributeError):
-        addHook("showQuestion", on_question_shown)
+    gui_hooks.reviewer_did_show_question.append(on_question_shown)

@@ -142,38 +142,22 @@ class DeckConfigDialogPatcher:
         self._deck_config_service = deck_config_service
 
     def patch(self):
-        try:  # 2.1.22+
-            from aqt.gui_hooks import (
-                deck_conf_did_load_config,
-                deck_conf_did_setup_ui_form,
-                deck_conf_will_save_config,
-            )
+        from aqt.gui_hooks import (
+            deck_conf_did_load_config,
+            deck_conf_did_setup_ui_form,
+            deck_conf_will_save_config,
+        )
 
-            deck_conf_did_setup_ui_form.append(
-                self._deck_config_service.on_deck_config_gui_loaded
-            )
-            deck_conf_did_load_config.append(
-                self._deck_config_service.on_deck_config_loaded
-            )
-            deck_conf_will_save_config.append(
-                self._deck_config_service.on_deck_config_will_save
-            )
-        except (AttributeError, ModuleNotFoundError):
-            from anki.hooks import wrap
-            from aqt.forms import dconf
+        deck_conf_did_setup_ui_form.append(
+            self._deck_config_service.on_deck_config_gui_loaded
+        )
+        deck_conf_did_load_config.append(
+            self._deck_config_service.on_deck_config_loaded
+        )
+        deck_conf_will_save_config.append(
+            self._deck_config_service.on_deck_config_will_save
+        )
 
-            dconf.Ui_Dialog.setupUi = wrap(
-                dconf.Ui_Dialog.setupUi,
-                self._deck_config_service.on_deck_config_gui_loaded,
-            )
-            DeckConf.loadConf = wrap(
-                DeckConf.loadConf, self._deck_config_service.on_deck_config_loaded
-            )
-            DeckConf.saveConf = wrap(
-                DeckConf.saveConf,
-                self._deck_config_service.on_deck_config_will_save,
-                "before",
-            )
 
 
 def initialize_deck_options(settings_key: str) -> DeckConfigService:
