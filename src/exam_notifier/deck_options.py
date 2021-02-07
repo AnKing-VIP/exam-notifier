@@ -90,43 +90,42 @@ class ExamConfigTab(QWidget):
 
 class DeckConfigService:
 
-    _exam_settings_key = "exam_settings"
-
-    def __init__(self, deck_config_tab_factory: Type[ExamConfigTab]):
+    def __init__(self, settings_key: str, deck_config_tab_factory: Type[ExamConfigTab]):
+        self._settings_key = settings_key
         self._factory = deck_config_tab_factory
 
     def key(self) -> str:
-        return self._exam_settings_key
+        return self._settings_key
 
     def on_deck_config_gui_loaded(self, deck_conf_dialog: DeckConf, *args):
         deck_config_tab = self._factory(parent=deck_conf_dialog)
         deck_conf_dialog.form.tabWidget.insertTab(
             3, deck_config_tab, deck_config_tab.windowTitle()
         )
-        deck_conf_dialog.exam_settings = deck_config_tab  # type: ignore[attr-defined]
+        setattr(deck_conf_dialog, self._settings_key, deck_config_tab)
 
     def on_deck_config_loaded(self, deck_conf_dialog: DeckConf, *args):
         exam_settings_page: ExamConfigTab = getattr(
-            deck_conf_dialog, self._exam_settings_key, None
+            deck_conf_dialog, self._settings_key, None
         )
         if not exam_settings_page:
             return
 
-        if not hasattr(deck_conf_dialog, self._exam_settings_key):
+        if not hasattr(deck_conf_dialog, self._settings_key):
             return
 
         deck_config: "DeckConfig" = deck_conf_dialog.conf
 
-        if not deck_config.get(self._exam_settings_key):
-            deck_config[self._exam_settings_key] = ExamSettings()._asdict()
+        if not deck_config.get(self._settings_key):
+            deck_config[self._settings_key] = ExamSettings()._asdict()
 
-        exam_settings_dict = deck_config[self._exam_settings_key]
+        exam_settings_dict = deck_config[self._settings_key]
 
         exam_settings_page.set_settings(ExamSettings(**exam_settings_dict))
 
     def on_deck_config_will_save(self, deck_conf_dialog: DeckConf, *args):
         exam_settings_page: ExamConfigTab = getattr(
-            deck_conf_dialog, self._exam_settings_key, None
+            deck_conf_dialog, self._settings_key, None
         )
         if not exam_settings_page:
             return
@@ -135,7 +134,7 @@ class DeckConfigService:
 
         exam_deck_settings = exam_settings_page.get_settings()
 
-        deck_config[self._exam_settings_key] = exam_deck_settings._asdict()
+        deck_config[self._settings_key] = exam_deck_settings._asdict()
 
 
 class DeckConfigDialogPatcher:
@@ -177,8 +176,8 @@ class DeckConfigDialogPatcher:
             )
 
 
-def initialize_deck_options() -> DeckConfigService:
-    deck_config_service = DeckConfigService(ExamConfigTab)
+def initialize_deck_options(settings_key: str) -> DeckConfigService:
+    deck_config_service = DeckConfigService(settings_key, ExamConfigTab)
     deck_config_patcher = DeckConfigDialogPatcher(deck_config_service)
     deck_config_patcher.patch()
     

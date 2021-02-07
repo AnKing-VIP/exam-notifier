@@ -33,40 +33,22 @@
 Initializes add-on components.
 """
 
+from typing import Final
+
 from ._version import __version__  # noqa: F401
+from .consts import ADDON
+from .deck_options import initialize_deck_options
+from .libaddon.consts import setAddonProperties
+from .tooltip import initialize_tooltip
 
-from .libaddon import maybeVendorTyping
+# Constants
 
-maybeVendorTyping()
+EXAM_SETTINGS_KEY: Final = "exam_settings"
 
-def initialize_addon():
-    """Initializes add-on after performing a few checks
-    
-    Allows more fine-grained control over add-on execution, which can
-    be helpful when implementing workarounds for Anki bugs (e.g. the module
-    import bug present in all Anki 2.1 versions up to 2.1.14)
-    """
+setAddonProperties(ADDON)
 
-    from .libaddon import checkFor2114ImportError
-    from .consts import ADDON
+# Deck options dialog
 
-    if not checkFor2114ImportError(ADDON.NAME):
-        return False
+initialize_deck_options(settings_key=EXAM_SETTINGS_KEY)
 
-    from .libaddon.consts import setAddonProperties
-
-    setAddonProperties(ADDON)
-
-    # from .libaddon.debug import maybeStartDebugging
-
-    # maybeStartDebugging()
-
-    from .tooltip import initialize_tooltip
-    from .deck_options import initialize_deck_options
-
-    deck_config_service = initialize_deck_options()
-
-    initialize_tooltip()
-    initialize_deck_options()
-
-initialize_addon()
+initialize_tooltip()
