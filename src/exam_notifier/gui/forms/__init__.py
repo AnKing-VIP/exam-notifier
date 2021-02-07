@@ -2,7 +2,7 @@
 
 # Exam Notifier Add-on for Anki
 #
-# Copyright (C) 2019-2021  Aristotelis P. <https://glutanimate.com/>
+# Copyright (C) 2019  Aristotelis P. <https://glutanimate.com/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -30,43 +30,7 @@
 # Any modifications to this file must keep this entire header intact.
 
 """
-Initializes add-on components.
+Qt dialog forms
 """
 
-from ._version import __version__  # noqa: F401
-
-from .libaddon import maybeVendorTyping
-
-maybeVendorTyping()
-
-def initialize_addon():
-    """Initializes add-on after performing a few checks
-    
-    Allows more fine-grained control over add-on execution, which can
-    be helpful when implementing workarounds for Anki bugs (e.g. the module
-    import bug present in all Anki 2.1 versions up to 2.1.14)
-    """
-
-    from .libaddon import checkFor2114ImportError
-    from .consts import ADDON
-
-    if not checkFor2114ImportError(ADDON.NAME):
-        return False
-
-    from .libaddon.consts import setAddonProperties
-
-    setAddonProperties(ADDON)
-
-    # from .libaddon.debug import maybeStartDebugging
-
-    # maybeStartDebugging()
-
-    from .tooltip import initialize_tooltip
-    from .deck_options import initialize_deck_options
-
-    deck_config_service = initialize_deck_options()
-
-    initialize_tooltip()
-    initialize_deck_options()
-
-initialize_addon()
+from .anki21 import *  # noqa: F401
