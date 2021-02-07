@@ -1,15 +1,15 @@
 {
-    "display_name": "Exam Notifier",
-    "module_name": "exam_notifier",
-    "repo_name": "exam-notifier",
-    "ankiweb_id": "",
-    "author": "Glutanimate",
-    "contact": "https://glutanimate.com",
-    "homepage": "https://github.com/glutanimate/exam-notifier",
-    "copyright_start": 2019,
-    "tags": "",
-    "conflicts": [],
-    "targets": [
-        "anki21"
-    ]
+  "display_name": "Exam Notifier",
+  "module_name": "exam_notifier",
+  "repo_name": "exam-notifier",
+  "ankiweb_id": "",
+  "author": "Glutanimate",
+  "contact": "https://glutanimate.com",
+  "homepage": "https://github.com/glutanimate/exam-notifier",
+  "copyright_start": 2019,
+  "tags": "",
+  "conflicts": [],
+  "targets": ["anki21"],
+  "min_anki_version": "2.1.22",
+  "tested_anki_version": "2.1.40"
 }
