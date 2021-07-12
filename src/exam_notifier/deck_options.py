@@ -46,11 +46,7 @@ from .gui.forms import deckconf_exam_tab
 if TYPE_CHECKING:
     from anki.decks import DeckConfig
 
-
-class ExamSettings(NamedTuple):
-    enabled: bool = False  # exam notifications enabled
-    exam_name: str = ""
-    exam_date: Optional[int] = None  # secs since epoch
+from .decks import ExamSettings
 
 
 class ExamConfigTab(QWidget):
@@ -88,14 +84,11 @@ class ExamConfigTab(QWidget):
         return int(round(qdatetime.toSecsSinceEpoch()))
 
 
-class DeckConfigService:
+class DeckConfigDialogService:
 
     def __init__(self, settings_key: str, deck_config_tab_factory: Type[ExamConfigTab]):
         self._settings_key = settings_key
         self._factory = deck_config_tab_factory
-
-    def key(self) -> str:
-        return self._settings_key
 
     def on_deck_config_gui_loaded(self, deck_conf_dialog: DeckConf, *args):
         deck_config_tab = self._factory(parent=deck_conf_dialog)
@@ -138,7 +131,7 @@ class DeckConfigService:
 
 
 class DeckConfigDialogPatcher:
-    def __init__(self, deck_config_service: DeckConfigService):
+    def __init__(self, deck_config_service: DeckConfigDialogService):
         self._deck_config_service = deck_config_service
 
     def patch(self):
@@ -160,9 +153,7 @@ class DeckConfigDialogPatcher:
 
 
 
-def initialize_deck_options(settings_key: str) -> DeckConfigService:
-    deck_config_service = DeckConfigService(settings_key, ExamConfigTab)
-    deck_config_patcher = DeckConfigDialogPatcher(deck_config_service)
-    deck_config_patcher.patch()
-    
-    return deck_config_service
+def initialize_deck_options(settings_key: str):
+    deck_config_dialog_service = DeckConfigDialogService(settings_key, ExamConfigTab)
+    deck_config_dialog_patcher = DeckConfigDialogPatcher(deck_config_dialog_service)
+    deck_config_dialog_patcher.patch()
