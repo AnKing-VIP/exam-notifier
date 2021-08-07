@@ -133,11 +133,11 @@ class DeckConfigDialogService:
         deck_config[self._settings_key] = exam_deck_settings._asdict()
 
 
-class DeckConfigDialogPatcher:
+class DeckConfigDialogSubscriber:
     def __init__(self, deck_config_service: DeckConfigDialogService):
         self._deck_config_service = deck_config_service
 
-    def patch(self):
+    def subscribe(self):
         from aqt.gui_hooks import (
             deck_conf_did_load_config,
             deck_conf_did_setup_ui_form,
@@ -153,9 +153,3 @@ class DeckConfigDialogPatcher:
         deck_conf_will_save_config.append(
             self._deck_config_service.on_deck_config_will_save
         )
-
-
-def initialize_qt_deck_options(settings_key: str):
-    deck_config_dialog_service = DeckConfigDialogService(settings_key, ExamConfigTab)
-    deck_config_dialog_patcher = DeckConfigDialogPatcher(deck_config_dialog_service)
-    deck_config_dialog_patcher.patch()

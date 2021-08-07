@@ -102,3 +102,15 @@ class ReviewService:
         if (collection := self._main_window.col) is None:
             raise AnkiObjectError("Collection is not loaded or not ready")
         return collection
+
+
+class ReviewerSubscriber:
+    def __init__(self, review_service: ReviewService):
+        self._review_service = review_service
+
+    def subscribe(self):
+        from aqt.gui_hooks import reviewer_did_show_question
+
+        reviewer_did_show_question.append(
+            self._review_service.on_reviewer_did_show_question
+        )

@@ -29,22 +29,21 @@
 #
 # Any modifications to this file must keep this entire header intact.
 
-from typing import Final, TYPE_CHECKING
+from typing import TYPE_CHECKING, Final
 
 from aqt import mw
-from aqt.gui_hooks import reviewer_did_show_question
 
 from ._version import __version__  # noqa: F401
 from .consts import ADDON
+from .deck_config import DeckConfigService
 from .deck_options_legacy import (
-    DeckConfigDialogPatcher,
+    DeckConfigDialogSubscriber,
     DeckConfigDialogService,
     ExamConfigTab,
 )
 from .libaddon.consts import set_addon_properties
 from .notifications import NotificationService
-from .reviewer import ReviewService
-from .deck_config import DeckConfigService
+from .reviewer import ReviewerSubscriber, ReviewService
 
 if TYPE_CHECKING:
     assert mw is not None
@@ -62,8 +61,8 @@ set_addon_properties(ADDON)
 deck_config_dialog_service = DeckConfigDialogService(
     settings_key=EXAM_SETTINGS_KEY, deck_config_tab_factory=ExamConfigTab
 )
-deck_config_dialog_patcher = DeckConfigDialogPatcher(deck_config_dialog_service)
-deck_config_dialog_patcher.patch()
+deck_config_dialog_subscriber = DeckConfigDialogSubscriber(deck_config_dialog_service)
+deck_config_dialog_subscriber.subscribe()
 
 # Web (new) TODO
 
@@ -82,5 +81,5 @@ review_service = ReviewService(
     deck_config_service=deck_config_service,
     notification_service=notification_service,
 )
-
-reviewer_did_show_question.append(review_service.on_reviewer_did_show_question)
+reviewer_subscriber = ReviewerSubscriber(review_service=review_service)
+reviewer_subscriber.subscribe()
