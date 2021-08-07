@@ -35,6 +35,8 @@ if TYPE_CHECKING:
     from anki.decks import DeckConfigDict, DeckId, DeckManager
     from aqt.main import AnkiQt
 
+DeckIdType = Union["DeckId", int]
+
 
 class ExamSettings(NamedTuple):
     enabled: bool = False  # exam notifications enabled
@@ -51,9 +53,9 @@ class DeckConfigService:
         self._main_window = main_window
         self._settings_key = settings_key
 
-    def get_settings_for_did(self, deck_id: Union["DeckId", int]) -> ExamSettings:
+    def get_settings_for_did(self, deck_id: DeckIdType) -> ExamSettings:
         deck_config = self._config_dict_for_deck_id(deck_id)
-        return self.get_settings(deck_config)
+        return self.get_settings(deck_config=deck_config)
 
     def get_settings(self, deck_config: "DeckConfigDict") -> ExamSettings:
         """
@@ -69,12 +71,17 @@ class DeckConfigService:
 
         return ExamSettings(**exam_settings_dict)
 
-    def set_settings(self, deck_id: Union["DeckId", int], settings: ExamSettings):
+    def set_settings_for_did(self, deck_id: DeckIdType, settings: ExamSettings):
         deck_config = self._config_dict_for_deck_id(deck_id)
+        self.set_settings(deck_config=deck_config, settings=settings)
 
-    def _config_dict_for_deck_id(
-        self, deck_id: Union["DeckId", int]
-    ) -> "DeckConfigDict":
+    def set_settings(self, deck_config: "DeckConfigDict", settings: ExamSettings):
+        try:
+            self._deck_manager.update_config(deck_config)
+        except AttributeError:
+            self._deck_manager.updateConf(deck_config)  # type: ignore[attr-defined]
+
+    def _config_dict_for_deck_id(self, deck_id: DeckIdType) -> "DeckConfigDict":
         try:  # 2.1.45+
             return self._deck_manager.config_dict_for_deck_id(
                 deck_id  # type: ignore[arg-type]
