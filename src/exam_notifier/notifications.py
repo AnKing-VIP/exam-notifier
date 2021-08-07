@@ -38,15 +38,17 @@ from PyQt5.QtWidgets import QWidget
 
 from .deck_config import ExamSettings
 
-@dataclass  # type: ignore[misc]  # https://github.com/python/mypy/issues/5374
-class _AbstractNotification(ABC):
+
+class Notification(ABC):
+    """Class describing notification content"""
+
     @abstractproperty
     def message(self) -> str:
         ...
 
 
-@dataclass  # type: ignore[misc]
-class ExamNotification(_AbstractNotification):
+@dataclass
+class ExamNotification(Notification):
     days_past_exam: int
     exam_settings: ExamSettings
 
@@ -64,9 +66,9 @@ see it <b>{self.days_past_exam}</b> days after your{exam_name_str} exam.
 class NotificationService:
     def notify(
         self,
-        notification: _AbstractNotification,
+        notification: Notification,
         period: int = 3000,
         parent: Optional[QWidget] = None,
     ):
-        # TODO: custom notification system
+        # TODO: custom notification system instead of aqt.tooltip
         tooltip(msg=notification.message, period=period, parent=parent)
