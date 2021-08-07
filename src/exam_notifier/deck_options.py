@@ -44,7 +44,7 @@ from PyQt5.QtWidgets import QWidget
 from .gui.forms import deckconf_exam_tab
 
 if TYPE_CHECKING:
-    from anki.decks import DeckConfig
+    from anki.decks import DeckConfigDict
 
 from .decks import ExamSettings
 
@@ -106,7 +106,9 @@ class DeckConfigDialogService:
         if not hasattr(deck_conf_dialog, self._settings_key):
             return
 
-        deck_config: "DeckConfig" = deck_conf_dialog.conf
+        deck_config: Optional["DeckConfigDict"] = deck_conf_dialog.conf
+        if not deck_config:
+            return
 
         if not deck_config.get(self._settings_key):
             deck_config[self._settings_key] = ExamSettings()._asdict()
@@ -122,7 +124,9 @@ class DeckConfigDialogService:
         if not exam_settings_page:
             return
 
-        deck_config: "DeckConfig" = deck_conf_dialog.conf
+        deck_config: Optional["DeckConfigDict"] = deck_conf_dialog.conf
+        if not deck_config:
+            return
 
         exam_deck_settings = exam_settings_page.get_settings()
 
@@ -134,9 +138,11 @@ class DeckConfigDialogPatcher:
         self._deck_config_service = deck_config_service
 
     def patch(self):
-        from aqt.gui_hooks import (deck_conf_did_load_config,
-                                   deck_conf_did_setup_ui_form,
-                                   deck_conf_will_save_config)
+        from aqt.gui_hooks import (
+            deck_conf_did_load_config,
+            deck_conf_did_setup_ui_form,
+            deck_conf_will_save_config,
+        )
 
         deck_conf_did_setup_ui_form.append(
             self._deck_config_service.on_deck_config_gui_loaded
