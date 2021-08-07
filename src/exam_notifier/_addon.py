@@ -29,12 +29,22 @@
 #
 # Any modifications to this file must keep this entire header intact.
 
-"""
-Initializes add-on components.
-"""
+from typing import Final
 
-import os
+from ._version import __version__  # noqa: F401
+from .consts import ADDON
+from .deck_options_legacy import initialize_deck_options
+from .libaddon.consts import setAddonProperties
+from .tooltip import initialize_tooltip
 
-if not os.environ.get("ADDON_TEST_ENV"):
-    from ._addon import *  # noqa: F401, F403
+# Constants
 
+EXAM_SETTINGS_KEY: Final = "exam_settings"
+
+setAddonProperties(ADDON)
+
+# Deck options dialog
+
+initialize_deck_options(settings_key=EXAM_SETTINGS_KEY)
+
+initialize_tooltip()
