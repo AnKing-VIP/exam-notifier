@@ -29,11 +29,12 @@
 #
 # Any modifications to this file must keep this entire header intact.
 
-from typing import TYPE_CHECKING, NamedTuple, Optional, Type
+from typing import TYPE_CHECKING, NamedTuple, Optional, Union
 
 if TYPE_CHECKING:
+    from anki.decks import DeckConfigDict, DeckId, DeckManager
     from aqt.main import AnkiQt
-    from anki.decks import DeckConfig
+
 
 class ExamSettings(NamedTuple):
     enabled: bool = False  # exam notifications enabled
@@ -41,17 +42,20 @@ class ExamSettings(NamedTuple):
     exam_date: Optional[int] = None  # secs since epoch
 
 
+class DeckConfigError(Exception):
+    pass
+
+
 class DeckConfigService:
     def __init__(self, main_window: "AnkiQt", settings_key: str):
         self._main_window = main_window
         self._settings_key = settings_key
-    
-    def get_settings_for_did(self, deck_id: int) -> ExamSettings:
-        deck_config: "DeckConfig" = self._main_window.col.decks.confForDid(deck_id)
 
+    def get_settings_for_did(self, deck_id: Union["DeckId", int]) -> ExamSettings:
+        deck_config = self._config_dict_for_deck_id(deck_id)
         return self.get_settings(deck_config)
-    
-    def get_settings(self, deck_config: "DeckConfig") -> ExamSettings:
+
+    def get_settings(self, deck_config: "DeckConfigDict") -> ExamSettings:
         """
         Gets add-on settings from deck configuration, mutates configuration
         with default settings if not existing
@@ -62,10 +66,25 @@ class DeckConfigService:
             return default_settings
 
         exam_settings_dict = deck_config[self._settings_key]
-        
+
         return ExamSettings(**exam_settings_dict)
-    
-    def set_settings(self, deck_id: int, settings: ExamSettings):
-        deck_config: "DeckConfig" = self._main_window.col.decks.confForDid(deck_id)
-        
-        
+
+    def set_settings(self, deck_id: Union["DeckId", int], settings: ExamSettings):
+        deck_config = self._config_dict_for_deck_id(deck_id)
+
+    def _config_dict_for_deck_id(
+        self, deck_id: Union["DeckId", int]
+    ) -> "DeckConfigDict":
+        try:  # 2.1.45+
+            return self._deck_manager.config_dict_for_deck_id(
+                deck_id  # type: ignore[arg-type]
+            )
+        except AttributeError:
+            return self._deck_manager.confForDid(deck_id)  # type: ignore[attr-defined]
+
+    @property
+    def _deck_manager(self) -> "DeckManager":
+        if (collection := self._main_window.col) is None:
+            raise DeckConfigError("User collection is not loaded")
+
+        return collection.decks
