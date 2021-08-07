@@ -34,6 +34,7 @@
 Additions to Anki's deck options dialog
 """
 
+from dataclasses import asdict
 from datetime import datetime
 from typing import TYPE_CHECKING, Optional, Type
 
@@ -111,7 +112,7 @@ class DeckConfigDialogService:
             return
 
         if not deck_config.get(self._settings_key):
-            deck_config[self._settings_key] = ExamSettings()._asdict()
+            deck_config[self._settings_key] = asdict(ExamSettings())
 
         exam_settings_dict = deck_config[self._settings_key]
 
@@ -130,7 +131,7 @@ class DeckConfigDialogService:
 
         exam_deck_settings = exam_settings_page.get_settings()
 
-        deck_config[self._settings_key] = exam_deck_settings._asdict()
+        deck_config[self._settings_key] = asdict(exam_deck_settings)
 
 
 class DeckConfigDialogSubscriber:

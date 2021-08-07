@@ -29,9 +29,11 @@
 #
 # Any modifications to this file must keep this entire header intact.
 
-from typing import TYPE_CHECKING, NamedTuple, Optional, Union
+from dataclasses import asdict, dataclass
+from typing import TYPE_CHECKING, Optional, Union
 
 from .errors import AnkiObjectError
+from .libaddon.util.dataclasses import limit_dict_by_dataclass_fields
 
 if TYPE_CHECKING:
     from anki.decks import DeckConfigDict, DeckId, DeckManager
@@ -40,7 +42,8 @@ if TYPE_CHECKING:
 DeckIdType = Union["DeckId", int]
 
 
-class ExamSettings(NamedTuple):
+@dataclass
+class ExamSettings:
     enabled: bool = False  # exam notifications enabled
     exam_name: str = ""
     exam_date: Optional[int] = None  # secs since epoch
@@ -60,15 +63,16 @@ class DeckConfigService:
         Gets add-on settings from deck configuration, mutates configuration
         with default settings if not existing
         """
-        # TODO: refactor
         if not deck_config.get(self._settings_key):
             default_settings = ExamSettings()
-            deck_config[self._settings_key] = default_settings._asdict()
+            deck_config[self._settings_key] = asdict(default_settings)
             return default_settings
 
         exam_settings_dict = deck_config[self._settings_key]
 
-        return ExamSettings(**exam_settings_dict)
+        return ExamSettings(
+            **limit_dict_by_dataclass_fields(exam_settings_dict, ExamSettings)
+        )
 
     def set_settings_for_did(self, deck_id: DeckIdType, settings: ExamSettings):
         deck_config = self._config_dict_for_deck_id(deck_id)
