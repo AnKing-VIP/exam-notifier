@@ -29,76 +29,44 @@
 #
 # Any modifications to this file must keep this entire header intact.
 
-"""
-Reviewer tooltip
-"""
+from abc import ABC, abstractproperty
+from dataclasses import dataclass
+from typing import Optional
 
-
-from datetime import datetime, timedelta
-
-from aqt import mw
-from aqt.reviewer import Reviewer
 from aqt.utils import tooltip
+from PyQt5.QtWidgets import QWidget
 
-from anki.consts import QUEUE_TYPE_REV
+from .deck_config import ExamSettings
+
+@dataclass  # type: ignore[misc]  # https://github.com/python/mypy/issues/5374
+class _AbstractNotification(ABC):
+    @abstractproperty
+    def message(self) -> str:
+        ...
 
 
-def on_question_shown(*args, **kwargs):
-    reviewer: Reviewer = mw.reviewer
+@dataclass  # type: ignore[misc]
+class ExamNotification(_AbstractNotification):
+    days_past_exam: int
+    exam_settings: ExamSettings
 
-    try:
-        sched = mw.col.sched
-        card = reviewer.card
-    except AttributeError:
-        raise
-
-    if card.queue != QUEUE_TYPE_REV:
-        # not a review card
-        return
-
-    deck_options = mw.col.decks.confForDid(card.odid or card.did)
-
-    try:
-        options = deck_options["examNotifier"]
-    except KeyError:
-        return
-
-    if not options["enable"] or not options["date"]:
-        return
-
-    datetime_now = datetime.now()
-    datetime_exam = datetime.fromtimestamp(options["date"])
-
-    if datetime_now > datetime_exam:
-        return
-
-    ease_good = reviewer._defaultEase()
-
-    # next ivl for "good"
-    next_ivl = sched.nextIvl(card, ease_good) / 86400
-
-    datetime_next_review = datetime.now() + timedelta(days=next_ivl)
-
-    if datetime_next_review < datetime_exam:
-        return
-
-    days_after = (datetime_next_review - datetime_exam).days
-
-    # TODO: use mw.col.sched.answerButtons(card) to check for hard and easy
-
-    name_str = f" <b>{options['name']}</b>" if options["name"] else ""
-
-    tooltip(
-        f"""
+    @property
+    def message(self) -> str:
+        exam_name = self.exam_settings.exam_name
+        exam_name_str = f" <b>{exam_name}</b>" if exam_name else ""
+        return f"""
 <b>Exam Notifier</b><br>
 If you answer this card with <span style="color:green;">Good</span> you will<br>
-see it <b>{days_after}</b> days after your{name_str} exam.
-""",
-        period=3000,
-    )
+see it <b>{self.days_past_exam}</b> days after your{exam_name_str} exam.
+"""
 
 
-def initialize_tooltip():
-    from aqt import gui_hooks
-
-    gui_hooks.reviewer_did_show_question.append(on_question_shown)
+class NotificationService:
+    def notify(
+        self,
+        notification: _AbstractNotification,
+        period: int = 3000,
+        parent: Optional[QWidget] = None,
+    ):
+        # TODO: custom notification system
+        tooltip(msg=notification.message, period=period, parent=parent)

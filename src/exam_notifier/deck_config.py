@@ -31,6 +31,8 @@
 
 from typing import TYPE_CHECKING, NamedTuple, Optional, Union
 
+from .errors import AnkiObjectError
+
 if TYPE_CHECKING:
     from anki.decks import DeckConfigDict, DeckId, DeckManager
     from aqt.main import AnkiQt
@@ -42,10 +44,6 @@ class ExamSettings(NamedTuple):
     enabled: bool = False  # exam notifications enabled
     exam_name: str = ""
     exam_date: Optional[int] = None  # secs since epoch
-
-
-class DeckConfigError(Exception):
-    pass
 
 
 class DeckConfigService:
@@ -62,6 +60,7 @@ class DeckConfigService:
         Gets add-on settings from deck configuration, mutates configuration
         with default settings if not existing
         """
+        # TODO: refactor
         if not deck_config.get(self._settings_key):
             default_settings = ExamSettings()
             deck_config[self._settings_key] = default_settings._asdict()
@@ -92,6 +91,6 @@ class DeckConfigService:
     @property
     def _deck_manager(self) -> "DeckManager":
         if (collection := self._main_window.col) is None:
-            raise DeckConfigError("User collection is not loaded")
+            raise AnkiObjectError("User collection is not loaded")
 
         return collection.decks

@@ -29,24 +29,58 @@
 #
 # Any modifications to this file must keep this entire header intact.
 
-from typing import Final
+from typing import Final, TYPE_CHECKING
+
+from aqt import mw
+from aqt.gui_hooks import reviewer_did_show_question
 
 from ._version import __version__  # noqa: F401
 from .consts import ADDON
-from .deck_options_legacy import initialize_qt_deck_options
+from .deck_options_legacy import (
+    DeckConfigDialogPatcher,
+    DeckConfigDialogService,
+    ExamConfigTab,
+)
 from .libaddon.consts import set_addon_properties
-from .tooltip import initialize_tooltip
+from .notifications import NotificationService
+from .reviewer import ReviewService
+from .deck_config import DeckConfigService
 
-# Constants
+if TYPE_CHECKING:
+    assert mw is not None
+
+# Constants ####
 
 EXAM_SETTINGS_KEY: Final = "exam_settings"
 
 set_addon_properties(ADDON)
 
-# Deck options dialog
+# Deck options dialog ####
 
-initialize_qt_deck_options(settings_key=EXAM_SETTINGS_KEY)
+# Qt (Anki <= 2.1.44 and any Anki with V1 scheduler)
 
-# Reviewer
+deck_config_dialog_service = DeckConfigDialogService(
+    settings_key=EXAM_SETTINGS_KEY, deck_config_tab_factory=ExamConfigTab
+)
+deck_config_dialog_patcher = DeckConfigDialogPatcher(deck_config_dialog_service)
+deck_config_dialog_patcher.patch()
 
-initialize_tooltip()
+# Web (new) TODO
+
+# Deck config access ####
+
+deck_config_service = DeckConfigService(main_window=mw, settings_key=EXAM_SETTINGS_KEY)
+
+# Notifications ####
+
+notification_service = NotificationService()
+
+# Reviewer ####
+
+review_service = ReviewService(
+    main_window=mw,
+    deck_config_service=deck_config_service,
+    notification_service=notification_service,
+)
+
+reviewer_did_show_question.append(review_service.on_reviewer_did_show_question)
