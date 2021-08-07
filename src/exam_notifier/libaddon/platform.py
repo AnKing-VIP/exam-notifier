@@ -89,7 +89,7 @@ def pathMediaFiles():
     return mw.col.media.dir()
 
 
-def checkAnkiVersion(lower, upper=None):
+def is_anki_version_in_range(lower: str, upper=None):
     """Check whether anki version is in specified range
 
     By default the upper boundary is set to infinite
@@ -103,10 +103,10 @@ def checkAnkiVersion(lower, upper=None):
     Returns:
         bool -- Whether anki version is in specified range
     """
-    return checkVersion(anki_version, lower, upper=upper)
+    return is_version_in_range(anki_version, lower, upper=upper)
 
 
-def checkQtVersion(lower, upper=None):
+def is_qt_version_in_range(lower, upper=None):
     """Check whether Qt version is in specified range
 
     By default the upper boundary is set to infinite
@@ -121,10 +121,10 @@ def checkQtVersion(lower, upper=None):
         bool -- Whether Qt version is in specified range
     """
     from aqt.qt import QT_VERSION_STR
-    return checkVersion(QT_VERSION_STR, lower, upper=upper)
+    return is_version_in_range(QT_VERSION_STR, lower, upper=upper)
 
 
-def checkVersion(current, lower, upper=None):
+def is_version_in_range(current, lower, upper=None):
     """Generic version checker
 
     Checks whether specified version is in specified range
