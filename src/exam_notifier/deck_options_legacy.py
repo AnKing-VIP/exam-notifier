@@ -46,7 +46,7 @@ from .gui.forms import deckconf_exam_tab
 if TYPE_CHECKING:
     from anki.decks import DeckConfigDict
 
-from .decks import ExamSettings
+from .deck_config import ExamSettings
 
 
 class ExamConfigTab(QWidget):
@@ -155,7 +155,7 @@ class DeckConfigDialogPatcher:
         )
 
 
-def initialize_deck_options(settings_key: str):
+def initialize_qt_deck_options(settings_key: str):
     deck_config_dialog_service = DeckConfigDialogService(settings_key, ExamConfigTab)
     deck_config_dialog_patcher = DeckConfigDialogPatcher(deck_config_dialog_service)
     deck_config_dialog_patcher.patch()

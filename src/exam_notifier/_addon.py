@@ -33,18 +33,20 @@ from typing import Final
 
 from ._version import __version__  # noqa: F401
 from .consts import ADDON
-from .deck_options_legacy import initialize_deck_options
-from .libaddon.consts import setAddonProperties
+from .deck_options_legacy import initialize_qt_deck_options
+from .libaddon.consts import set_addon_properties
 from .tooltip import initialize_tooltip
 
 # Constants
 
 EXAM_SETTINGS_KEY: Final = "exam_settings"
 
-setAddonProperties(ADDON)
+set_addon_properties(ADDON)
 
 # Deck options dialog
 
-initialize_deck_options(settings_key=EXAM_SETTINGS_KEY)
+initialize_qt_deck_options(settings_key=EXAM_SETTINGS_KEY)
+
+# Reviewer
 
 initialize_tooltip()
