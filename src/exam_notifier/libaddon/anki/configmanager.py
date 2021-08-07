@@ -38,8 +38,8 @@ from __future__ import (absolute_import, division,
 
 import os
 import io
+import json
 
-from anki.utils import json
 from anki.hooks import addHook, runHook
 
 from .._vendor.packaging import version
@@ -511,6 +511,7 @@ class ConfigManager(object):
             defaults = self.mw.addonManager.addonConfigDefaults(MODULE_ADDON)
             if defaults is None:
                 raise ConfigError("Default config.json file could not be found")
+            return defaults
         else:
             return self._addonConfigDefaults20()
 
