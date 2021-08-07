@@ -47,7 +47,7 @@ from .gui.forms import deckconf_exam_tab
 if TYPE_CHECKING:
     from anki.decks import DeckConfigDict
 
-from .deck_config import ExamSettings
+from .deck_config import ExamSettings, DeckConfigService
 
 
 class ExamConfigTab(QWidget):
@@ -86,8 +86,14 @@ class ExamConfigTab(QWidget):
 
 
 class DeckConfigDialogService:
-    def __init__(self, settings_key: str, deck_config_tab_factory: Type[ExamConfigTab]):
+    def __init__(
+        self,
+        settings_key: str,
+        deck_config_service: DeckConfigService,
+        deck_config_tab_factory: Type[ExamConfigTab],
+    ):
         self._settings_key = settings_key
+        self._deck_config_service = deck_config_service
         self._factory = deck_config_tab_factory
 
     def on_deck_config_gui_loaded(self, deck_conf_dialog: DeckConf, *args):
@@ -111,12 +117,8 @@ class DeckConfigDialogService:
         if not deck_config:
             return
 
-        if not deck_config.get(self._settings_key):
-            deck_config[self._settings_key] = asdict(ExamSettings())
-
-        exam_settings_dict = deck_config[self._settings_key]
-
-        exam_settings_page.set_settings(ExamSettings(**exam_settings_dict))
+        exam_settings = self._deck_config_service.get_settings(deck_config=deck_config)
+        exam_settings_page.set_settings(exam_settings)
 
     def on_deck_config_will_save(self, deck_conf_dialog: DeckConf, *args):
         exam_settings_page: Optional[ExamConfigTab] = getattr(
@@ -130,8 +132,8 @@ class DeckConfigDialogService:
             return
 
         exam_deck_settings = exam_settings_page.get_settings()
-
         deck_config[self._settings_key] = asdict(exam_deck_settings)
+        # deck config dialog handles updating
 
 
 class DeckConfigDialogSubscriber:

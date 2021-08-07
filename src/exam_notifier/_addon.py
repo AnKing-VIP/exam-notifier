@@ -54,21 +54,23 @@ EXAM_SETTINGS_KEY: Final = "exam_settings"
 
 set_addon_properties(ADDON)
 
+# Deck config access ####
+
+deck_config_service = DeckConfigService(main_window=mw, settings_key=EXAM_SETTINGS_KEY)
+
 # Deck options dialog ####
 
 # Qt (Anki <= 2.1.44 and any Anki with V1 scheduler)
 
 deck_config_dialog_service = DeckConfigDialogService(
-    settings_key=EXAM_SETTINGS_KEY, deck_config_tab_factory=ExamConfigTab
+    settings_key=EXAM_SETTINGS_KEY,
+    deck_config_service=deck_config_service,
+    deck_config_tab_factory=ExamConfigTab,
 )
 deck_config_dialog_subscriber = DeckConfigDialogSubscriber(deck_config_dialog_service)
 deck_config_dialog_subscriber.subscribe()
 
 # Web (new) TODO
-
-# Deck config access ####
-
-deck_config_service = DeckConfigService(main_window=mw, settings_key=EXAM_SETTINGS_KEY)
 
 # Notifications ####
 
