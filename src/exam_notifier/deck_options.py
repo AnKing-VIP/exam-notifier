@@ -35,7 +35,7 @@ Additions to Anki's deck options dialog
 """
 
 from datetime import datetime
-from typing import TYPE_CHECKING, NamedTuple, Optional, Type
+from typing import TYPE_CHECKING, Optional, Type
 
 from aqt.deckconf import DeckConf
 from PyQt5.QtCore import QDateTime
@@ -85,7 +85,6 @@ class ExamConfigTab(QWidget):
 
 
 class DeckConfigDialogService:
-
     def __init__(self, settings_key: str, deck_config_tab_factory: Type[ExamConfigTab]):
         self._settings_key = settings_key
         self._factory = deck_config_tab_factory
@@ -98,7 +97,7 @@ class DeckConfigDialogService:
         setattr(deck_conf_dialog, self._settings_key, deck_config_tab)
 
     def on_deck_config_loaded(self, deck_conf_dialog: DeckConf, *args):
-        exam_settings_page: ExamConfigTab = getattr(
+        exam_settings_page: Optional[ExamConfigTab] = getattr(
             deck_conf_dialog, self._settings_key, None
         )
         if not exam_settings_page:
@@ -117,7 +116,7 @@ class DeckConfigDialogService:
         exam_settings_page.set_settings(ExamSettings(**exam_settings_dict))
 
     def on_deck_config_will_save(self, deck_conf_dialog: DeckConf, *args):
-        exam_settings_page: ExamConfigTab = getattr(
+        exam_settings_page: Optional[ExamConfigTab] = getattr(
             deck_conf_dialog, self._settings_key, None
         )
         if not exam_settings_page:
@@ -135,11 +134,9 @@ class DeckConfigDialogPatcher:
         self._deck_config_service = deck_config_service
 
     def patch(self):
-        from aqt.gui_hooks import (
-            deck_conf_did_load_config,
-            deck_conf_did_setup_ui_form,
-            deck_conf_will_save_config,
-        )
+        from aqt.gui_hooks import (deck_conf_did_load_config,
+                                   deck_conf_did_setup_ui_form,
+                                   deck_conf_will_save_config)
 
         deck_conf_did_setup_ui_form.append(
             self._deck_config_service.on_deck_config_gui_loaded
@@ -150,7 +147,6 @@ class DeckConfigDialogPatcher:
         deck_conf_will_save_config.append(
             self._deck_config_service.on_deck_config_will_save
         )
-
 
 
 def initialize_deck_options(settings_key: str):
