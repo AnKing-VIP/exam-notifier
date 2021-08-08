@@ -141,7 +141,7 @@ class NotificationService(QObject):
         if self._current_instance:
             try:
                 self._current_instance.deleteLater()
-            except:  # noqa: E722
+            except Exception:
                 # already deleted as parent window closed
                 pass
             self._current_instance = None
@@ -150,7 +150,7 @@ class NotificationService(QObject):
                 if self._parent:
                     self._parent.removeEventFilter(self._current_event_filter)
                 self._current_event_filter.deleteLater()
-            except Exception as e:  # noqa: E722
+            except Exception:
                 # already deleted as parent window closed
                 pass
             self._current_event_filter = None
