@@ -37,8 +37,8 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import TYPE_CHECKING, Callable, Optional
 
-from PyQt5.QtCore import QEvent, QObject, QPoint, Qt, QTimer
-from PyQt5.QtGui import QColor, QMouseEvent, QPalette, QResizeEvent
+from PyQt5.QtCore import QEvent, QObject, QPoint, Qt, QTimer, pyqtSignal, pyqtSlot
+from PyQt5.QtGui import QCloseEvent, QColor, QMouseEvent, QPalette, QResizeEvent
 from PyQt5.QtWidgets import QFrame, QLabel, QWidget
 
 if TYPE_CHECKING:
@@ -120,14 +120,14 @@ class NotificationService(QObject):
             notification.setOpenExternalLinks(False)
             notification.linkActivated.connect(link_handler)
 
-        if pre_show_callback:
-            pre_show_callback(notification)
-
         if self._parent:
             self._current_event_filter = NotificationEventFilter(
                 notification=notification
             )
             self._parent.installEventFilter(self._current_event_filter)
+
+        if pre_show_callback:
+            pre_show_callback(notification)
 
         notification.show()
 
@@ -137,6 +137,8 @@ class NotificationService(QObject):
             self._current_timer = self._progress_manager.timer(
                 3000, self.close_current_notification, False
             )
+        
+        notification.closed.connect(self.close_current_notification)
 
     def close_current_notification(self):
         if self._current_instance:
@@ -164,6 +166,8 @@ class Notification(QLabel):
 
     # Anki dialog manager support
     silentlyClose = True
+    
+    closed = pyqtSignal()
 
     def __init__(
         self,
@@ -194,7 +198,11 @@ class Notification(QLabel):
             # currently hovering link (as signaled by cursor shape)
             return super().mousePressEvent(event)
         event.accept()
-        self.hide()
+        self.close()
+    
+    def closeEvent(self, event: QCloseEvent):
+        self.closed.emit()
+        return super().closeEvent(event)
 
     def resizeEvent(self, event: QResizeEvent) -> None:
         # true geometry is only known once resizeEvent fires
