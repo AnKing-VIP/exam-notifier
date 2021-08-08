@@ -107,17 +107,18 @@ class NotificationServiceAdapter:
         notification_content: NotificationContent,
         notification_settings: Optional[NotificationSettings] = None,
     ):
-        settings = NotificationSettings(
-            align_horizontal=NotificationHAlignment.center,
-            space_vertical=100,
-            bg_color="#bfffbe",
-            duration=None,
-        )
+        if not notification_settings:
+            notification_settings = NotificationSettings(
+                align_horizontal=NotificationHAlignment.center,
+                space_vertical=100,
+                bg_color="#bfffbe",
+                duration=None,
+            )
 
         self._notification_service.notify(
             message=notification_content.message,
             link_handler=self._link_handler,
-            settings=settings,
+            settings=notification_settings,
             pre_show_callback=self.on_notification_will_show,
         )
 
@@ -126,6 +127,4 @@ class NotificationServiceAdapter:
 
     def on_notification_will_show(self, notification: Notification):
         notification.setFrameStyle(QFrame.NoFrame)
-        # notification.setLineWidth(2)
         notification.setContentsMargins(10, 10, 10, 5)
-        notification.setStyleSheet("QLabel{ border-radius: 25px; }")
