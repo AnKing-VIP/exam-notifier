@@ -40,9 +40,12 @@ from PyQt5.QtWidgets import QFrame
 from PyQt5.QtCore import QObject, pyqtSignal
 
 from .deck_config import ExamSettings
-from .libaddon.gui.notifications import (Notification, NotificationHAlignment,
-                                         NotificationService,
-                                         NotificationSettings)
+from .libaddon.gui.notifications import (
+    Notification,
+    NotificationHAlignment,
+    NotificationService,
+    NotificationSettings,
+)
 
 
 class NotificationContent(ABC):
@@ -66,7 +69,7 @@ class ExamNotificationContent(NotificationContent):
 <b>Exam Notifier</b><br>
 If you answer this card with <span style="color:green;">Good</span> you will<br>
 see it <b>{self.days_past_exam}</b> days after your{exam_name_str} exam.<br>
-<center><a href="#reschedule">Reschedule now</a></center>
+<center><a href="#reschedule">Reschedule Now...</a></center>
 """
 
 
@@ -96,14 +99,19 @@ class NotificationServiceAdapter:
             align_horizontal=NotificationHAlignment.center,
             space_vertical=100,
             bg_color="#e8ffa6",
+            dismiss_on_click=False,
+            duration=None,
         )
-        
+
         self._notification_service.notify(
             message=notification_content.message,
             link_handler=self._link_handler,
             settings=settings,
-            pre_show_callback=self.on_notification_will_show
+            pre_show_callback=self.on_notification_will_show,
         )
+
+    def close_current_notification(self):
+        self._notification_service.close_current_notification()
 
     def on_notification_will_show(self, notification: Notification):
         notification.setFrameStyle(QFrame.NoFrame)

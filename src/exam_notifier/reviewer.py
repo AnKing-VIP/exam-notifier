@@ -57,7 +57,7 @@ class ReviewService:
         self._deck_config_service = deck_config_service
         self._notification_service_adapter = notification_service_adapter
 
-    def on_reviewer_did_show_question(self, card: "Card"):
+    def on_reviewer_did_show_answer(self, card: "Card"):
         if card.queue != QUEUE_TYPE_REV:  # not a review
             return
 
@@ -93,6 +93,13 @@ class ReviewService:
             notification_content=notification_content
         )
 
+    def on_reviewer_did_show_question(self, *args, **kwargs):
+        self._notification_service_adapter.close_current_notification()
+
+    def on_main_window_state_will_change(self, new_state: str, old_state: str):
+        if old_state == "review" and new_state != "review":
+            self._notification_service_adapter.close_current_notification()
+
     @property
     def _reviewer(self) -> "Reviewer":
         return self._main_window.reviewer
@@ -109,8 +116,16 @@ class ReviewerSubscriber:
         self._review_service = review_service
 
     def subscribe(self):
-        from aqt.gui_hooks import reviewer_did_show_question
+        from aqt.gui_hooks import (
+            reviewer_did_show_answer,
+            reviewer_did_show_question,
+            state_will_change,
+        )
 
+        reviewer_did_show_answer.append(
+            self._review_service.on_reviewer_did_show_answer
+        )
         reviewer_did_show_question.append(
             self._review_service.on_reviewer_did_show_question
         )
+        state_will_change.append(self._review_service.on_main_window_state_will_change)
