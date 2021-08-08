@@ -60,11 +60,12 @@ class NotificationVAlignment(Enum):
 @dataclass
 class NotificationSettings:
     """Notification settings
-    
+
     Args:
         duration: Time in ms the notification should be shown for. Set to None or 0
                   for a persistent tooltip that has to be dismissed manually
     """
+
     duration: Optional[int] = 3000
     align_horizontal: NotificationHAlignment = NotificationHAlignment.left
     align_vertical: NotificationVAlignment = NotificationVAlignment.bottom
@@ -110,7 +111,7 @@ class NotificationService(QObject):
         notification.show()
 
         self._current_instance = notification
-        
+
         if settings.duration:
             self._current_timer = self._progress_manager.timer(
                 3000, self.close_current_notification, False
@@ -155,7 +156,12 @@ class Notification(QLabel):
         self.setPalette(palette)
 
     def mousePressEvent(self, event: QMouseEvent):
-        if not self._settings.dismiss_on_click:
+        if (
+            not self._settings.dismiss_on_click
+            or self.cursor().shape() == Qt.PointingHandCursor
+        ):
+            # Do not ignore mouse press event if configured that way and/or
+            # currently hovering link (as signaled by cursor shape)
             return super().mousePressEvent(event)
         event.accept()
         self.hide()

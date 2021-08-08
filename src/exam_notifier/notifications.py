@@ -110,8 +110,7 @@ class NotificationServiceAdapter:
         settings = NotificationSettings(
             align_horizontal=NotificationHAlignment.center,
             space_vertical=100,
-            bg_color="#e8ffa6",
-            dismiss_on_click=False,
+            bg_color="#bfffbe",
             duration=None,
         )
 
