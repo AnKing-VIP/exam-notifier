@@ -37,7 +37,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import TYPE_CHECKING, Callable, Optional
 
-from PyQt5.QtCore import QObject, QPoint, Qt, QTimer
+from PyQt5.QtCore import QEvent, QObject, QPoint, Qt, QTimer
 from PyQt5.QtGui import QColor, QMouseEvent, QPalette, QResizeEvent
 from PyQt5.QtWidgets import QFrame, QLabel, QWidget
 
@@ -76,6 +76,19 @@ class NotificationSettings:
     dismiss_on_click: bool = True
 
 
+class NotificationEventFilter(QObject):
+    def __init__(self, notification: "Notification"):
+        super().__init__(parent=notification)
+        self._notification = notification
+
+    def eventFilter(self, object: QObject, event: QEvent) -> bool:
+        event_type = event.type()
+        if event_type == QEvent.Resize or event_type == QEvent.Move:
+            self._notification._setPosition()
+
+        return super().eventFilter(object, event)
+
+
 class NotificationService(QObject):
     def __init__(
         self,
@@ -88,6 +101,7 @@ class NotificationService(QObject):
 
         self._current_timer: Optional[QTimer] = None
         self._current_instance: Optional["Notification"] = None
+        self._current_event_filter: Optional[NotificationEventFilter] = None
 
     def notify(
         self,
@@ -108,6 +122,12 @@ class NotificationService(QObject):
         if pre_show_callback:
             pre_show_callback(notification)
 
+        if self._parent:
+            self._current_event_filter = NotificationEventFilter(
+                notification=notification
+            )
+            self._parent.installEventFilter(self._current_event_filter)
+
         notification.show()
 
         self._current_instance = notification
@@ -125,6 +145,15 @@ class NotificationService(QObject):
                 # already deleted as parent window closed
                 pass
             self._current_instance = None
+        if self._current_event_filter:
+            try:
+                if self._parent:
+                    self._parent.removeEventFilter(self._current_event_filter)
+                self._current_event_filter.deleteLater()
+            except Exception as e:  # noqa: E722
+                # already deleted as parent window closed
+                pass
+            self._current_event_filter = None
         if self._current_timer:
             self._current_timer.stop()
             self._current_timer = None
