@@ -84,7 +84,8 @@ class NotificationEventFilter(QObject):
     def eventFilter(self, object: QObject, event: QEvent) -> bool:
         event_type = event.type()
         if event_type == QEvent.Resize or event_type == QEvent.Move:
-            self._notification._setPosition()
+            self._notification.update_position()
+            self._notification.show()  # needed on macOS
 
         return super().eventFilter(object, event)
 
@@ -197,10 +198,10 @@ class Notification(QLabel):
 
     def resizeEvent(self, event: QResizeEvent) -> None:
         # true geometry is only known once resizeEvent fires
-        self._setPosition()
+        self.update_position()
         super().resizeEvent(event)
 
-    def _setPosition(self):
+    def update_position(self):
         align_horizontal = self._settings.align_horizontal
         align_vertical = self._settings.align_vertical
 
