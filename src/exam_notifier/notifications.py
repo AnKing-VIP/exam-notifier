@@ -36,7 +36,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from PyQt5.QtWidgets import QFrame
-from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
 from aqt.utils import openLink
 
@@ -96,9 +96,12 @@ Next review (<span style="color:green;">Good</span>): <b>{self.days_past_exam}</
 class ExamNotificationLinkhandler(QObject):
 
     reschedule_requested = pyqtSignal("qint64")
+    external_link_called = pyqtSignal()
 
+    @pyqtSlot(str)
     def __call__(self, link: str):
         if link.startswith("http"):
+            self.external_link_called.emit()
             openLink(link)
             return
 
