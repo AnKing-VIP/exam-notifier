@@ -36,8 +36,9 @@ from dataclasses import dataclass
 from typing import Optional
 
 from PyQt5.QtWidgets import QFrame
-
 from PyQt5.QtCore import QObject, pyqtSignal
+
+from aqt.utils import openLink
 
 from .deck_config import ExamSettings
 from .libaddon.gui.notifications import (
@@ -77,9 +78,18 @@ class ExamNotificationContent(NotificationContent):
 Next review (<span style="color:green;">Good</span>): <b>{self.days_past_exam}</b>
  {maybe_pluralize(self.days_past_exam, 'day')} after exam
 <br>
-<center><a href="#reschedule:{self.card_id}">Change due date...</a><br>
+<center><a style="color: #780000" href="#reschedule:{self.card_id}">Change due date...</a><br>
 <span>(<i>{self.days_until_exam}</i> {maybe_pluralize(self.days_until_exam, 'day')}
  until exam)</span></center>
+<p style="font-size: small">&nbsp;</p>
+<table cellpadding=0 style="margin: 0; padding: 0;" width="100%">
+    <td width="50%" align="left"><a style="text-decoration: none;" href="https://www.patreon.com/glutanimate">
+        <span style="font-size: small; color: #785959;">♥ Support Exam Notifier</span>
+    </a></td>
+    <td width="50%" align="right"><a style="text-decoration: none;" href="https://courses.ankipalace.com">
+        <span style="font-size: small; color: #785959;">▶ Master Its Use</span>
+    </a></td>
+</table>
 """
 
 
@@ -88,6 +98,10 @@ class ExamNotificationLinkhandler(QObject):
     reschedule_requested = pyqtSignal("qint64")
 
     def __call__(self, link: str):
+        if link.startswith("http"):
+            openLink(link)
+            return
+
         command, *data_list = link[1:].split(":", 1)
         data = data_list[0] if data_list else None
 
@@ -117,7 +131,8 @@ class NotificationServiceAdapter:
             notification_settings = NotificationSettings(
                 align_horizontal=NotificationHAlignment.center,
                 space_vertical=100,
-                bg_color="#bfffbe",
+                bg_color="#fdf0d5",
+                fg_color="#003049",
                 duration=None,
             )
 
