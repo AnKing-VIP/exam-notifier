@@ -59,18 +59,21 @@ class NotificationContent(ABC):
 @dataclass
 class ExamNotificationContent(NotificationContent):
     days_past_exam: int
+    days_until_exam: int
     card_id: int
     exam_settings: ExamSettings
 
     @property
     def message(self) -> str:
         exam_name = self.exam_settings.exam_name
-        exam_name_str = f" <b>{exam_name}</b>" if exam_name else ""
+        exam_name_str = f" {exam_name}" if exam_name else ""
         return f"""
-<b>Exam Notifier</b><br>
-If you answer this card with <span style="color:green;">Good</span> you will<br>
-see it <b>{self.days_past_exam}</b> days after your{exam_name_str} exam.<br>
-<center><a href="#reschedule:{self.card_id}">Reschedule Now...</a></center>
+<b>Exam Notifier</b>: Card due past{exam_name_str} exam<br><br>
+
+Next review (<span style="color:green;">Good</span>): <b>{self.days_past_exam}</b> days after exam
+<br>
+<center><a href="#reschedule:{self.card_id}">Change due date...</a><br>
+<span>(<i>{self.days_until_exam}</i> days until exam)</span></center>
 """
 
 
@@ -125,5 +128,5 @@ class NotificationServiceAdapter:
     def on_notification_will_show(self, notification: Notification):
         notification.setFrameStyle(QFrame.NoFrame)
         # notification.setLineWidth(2)
-        notification.setContentsMargins(10, 10, 10, 10)
+        notification.setContentsMargins(10, 10, 10, 5)
         notification.setStyleSheet("QLabel{ border-radius: 25px; }")

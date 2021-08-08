@@ -89,9 +89,11 @@ class ReviewService(QObject):
             return
 
         days_past_exam = (datetime_next_review - datetime_exam).days
+        days_until_exam = (datetime_exam - datetime_now).days
 
         notification_content = ExamNotificationContent(
             days_past_exam=days_past_exam,
+            days_until_exam=days_until_exam,
             exam_settings=exam_settings,
             card_id=int(card.id),
         )
