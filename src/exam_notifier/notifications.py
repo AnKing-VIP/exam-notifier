@@ -59,6 +59,7 @@ class NotificationContent(ABC):
 @dataclass
 class ExamNotificationContent(NotificationContent):
     days_past_exam: int
+    card_id: int
     exam_settings: ExamSettings
 
     @property
@@ -69,16 +70,24 @@ class ExamNotificationContent(NotificationContent):
 <b>Exam Notifier</b><br>
 If you answer this card with <span style="color:green;">Good</span> you will<br>
 see it <b>{self.days_past_exam}</b> days after your{exam_name_str} exam.<br>
-<center><a href="#reschedule">Reschedule Now...</a></center>
+<center><a href="#reschedule:{self.card_id}">Reschedule Now...</a></center>
 """
 
 
 class ExamNotificationLinkhandler(QObject):
 
-    reschedule_requested = pyqtSignal()
+    reschedule_requested = pyqtSignal("qint64")
 
     def __call__(self, link: str):
-        print(f"link {link} requested")
+        command, *data_list = link[1:].split(":", 1)
+        data = data_list[0] if data_list else None
+
+        if command == "reschedule" and data is not None:
+            card_id = int(data)
+            self.reschedule_requested.emit(card_id)
+
+        else:
+            print(f"Unrecognized link command {command}")
 
 
 class NotificationServiceAdapter:

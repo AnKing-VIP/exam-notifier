@@ -90,5 +90,9 @@ review_service = ReviewService(
     notification_service_adapter=notification_service_adapter,
 )
 
+notification_link_handler.reschedule_requested.connect(
+    review_service.interactively_reschedule_card
+)
+
 reviewer_subscriber = ReviewerSubscriber(review_service=review_service)
 reviewer_subscriber.subscribe()
