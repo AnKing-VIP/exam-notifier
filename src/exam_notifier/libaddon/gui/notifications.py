@@ -59,13 +59,20 @@ class NotificationVAlignment(Enum):
 
 @dataclass
 class NotificationSettings:
-    duration: int = 3000
+    """Notification settings
+    
+    Args:
+        duration: Time in ms the notification should be shown for. Set to None or 0
+                  for a persistent tooltip that has to be dismissed manually
+    """
+    duration: Optional[int] = 3000
     align_horizontal: NotificationHAlignment = NotificationHAlignment.left
     align_vertical: NotificationVAlignment = NotificationVAlignment.bottom
     space_horizontal: int = 0
     space_vertical: int = 0
     fg_color: str = "#000000"
     bg_color: str = "#FFFFFF"
+    dismiss_on_click: bool = True
 
 
 class NotificationService(QObject):
@@ -88,7 +95,7 @@ class NotificationService(QObject):
         link_handler: Optional[Callable[[str], None]] = None,
         pre_show_callback: Optional[Callable[["Notification"], None]] = None,
     ):
-        self._close_previous_notification()
+        self.close_current_notification()
 
         notification = Notification(
             text=message, settings=settings, parent=self._parent
@@ -103,11 +110,13 @@ class NotificationService(QObject):
         notification.show()
 
         self._current_instance = notification
-        self._current_timer = self._progress_manager.timer(
-            3000, self._close_previous_notification, False
-        )
+        
+        if settings.duration:
+            self._current_timer = self._progress_manager.timer(
+                3000, self.close_current_notification, False
+            )
 
-    def _close_previous_notification(self):
+    def close_current_notification(self):
         if self._current_instance:
             try:
                 self._current_instance.deleteLater()
@@ -145,9 +154,11 @@ class Notification(QLabel):
         palette.setColor(QPalette.WindowText, QColor(self._settings.fg_color))
         self.setPalette(palette)
 
-    # def mousePressEvent(self, evt: QMouseEvent):
-    #     super().mousePressEvent(evt)
-    #     self.hide()
+    def mousePressEvent(self, event: QMouseEvent):
+        if not self._settings.dismiss_on_click:
+            return super().mousePressEvent(event)
+        event.accept()
+        self.hide()
 
     def resizeEvent(self, event: QResizeEvent) -> None:
         # true geometry is only known once resizeEvent fires
