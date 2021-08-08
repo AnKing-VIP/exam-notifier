@@ -48,6 +48,10 @@ from .libaddon.gui.notifications import (
 )
 
 
+def maybe_pluralize(count: float, term: str) -> str:
+    return term + "s" if abs(count) > 1 else term
+
+
 class NotificationContent(ABC):
     """Class describing notification content"""
 
@@ -70,10 +74,12 @@ class ExamNotificationContent(NotificationContent):
         return f"""
 <b>Exam Notifier</b>: Card due past{exam_name_str} exam<br><br>
 
-Next review (<span style="color:green;">Good</span>): <b>{self.days_past_exam}</b> days after exam
+Next review (<span style="color:green;">Good</span>): <b>{self.days_past_exam}</b>
+ {maybe_pluralize(self.days_past_exam, 'day')} after exam
 <br>
 <center><a href="#reschedule:{self.card_id}">Change due date...</a><br>
-<span>(<i>{self.days_until_exam}</i> days until exam)</span></center>
+<span>(<i>{self.days_until_exam}</i> {maybe_pluralize(self.days_until_exam, 'day')}
+ until exam)</span></center>
 """
 
 
