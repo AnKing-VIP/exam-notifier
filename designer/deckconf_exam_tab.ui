@@ -115,7 +115,7 @@
      <item>
       <widget class="QPushButton" name="pushButton">
        <property name="text">
-        <string>General Exam Notifier Options</string>
+        <string>PLACEHOLDER: General Exam Notifier Options</string>
        </property>
       </widget>
      </item>
@@ -136,6 +136,13 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_5">
+     <property name="text">
+      <string>PLACEHOLDER:</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QLabel" name="label_3">
