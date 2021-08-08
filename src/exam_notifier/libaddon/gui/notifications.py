@@ -86,6 +86,7 @@ class NotificationService(QObject):
         message: str,
         settings: NotificationSettings,
         link_handler: Optional[Callable[[str], None]] = None,
+        pre_show_callback: Optional[Callable[["Notification"], None]] = None,
     ):
         self._close_previous_notification()
 
@@ -95,6 +96,9 @@ class NotificationService(QObject):
         if link_handler:
             notification.setOpenExternalLinks(False)
             notification.linkActivated.connect(link_handler)
+
+        if pre_show_callback:
+            pre_show_callback(notification)
 
         notification.show()
 
@@ -134,6 +138,8 @@ class Notification(QLabel):
         self.setFrameStyle(QFrame.Panel)
         self.setLineWidth(2)
         self.setWindowFlags(Qt.ToolTip)
+        self.setContentsMargins(10, 10, 10, 10)
+
         palette = QPalette()
         palette.setColor(QPalette.Window, QColor(self._settings.bg_color))
         palette.setColor(QPalette.WindowText, QColor(self._settings.fg_color))
