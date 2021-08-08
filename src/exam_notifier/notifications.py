@@ -33,11 +33,16 @@ from __future__ import annotations
 
 from abc import ABC, abstractproperty
 from dataclasses import dataclass
+from typing import Optional
+
+from PyQt5.QtWidgets import QFrame
 
 from PyQt5.QtCore import QObject, pyqtSignal
 
 from .deck_config import ExamSettings
-from .libaddon.gui.notifications import NotificationService, NotificationSettings
+from .libaddon.gui.notifications import (Notification, NotificationHAlignment,
+                                         NotificationService,
+                                         NotificationSettings)
 
 
 class NotificationContent(ABC):
@@ -85,10 +90,23 @@ class NotificationServiceAdapter:
     def notify(
         self,
         notification_content: NotificationContent,
-        notification_settings: NotificationSettings = NotificationSettings(),
+        notification_settings: Optional[NotificationSettings] = None,
     ):
+        settings = NotificationSettings(
+            align_horizontal=NotificationHAlignment.center,
+            space_vertical=100,
+            bg_color="#e8ffa6",
+        )
+        
         self._notification_service.notify(
             message=notification_content.message,
             link_handler=self._link_handler,
-            settings=notification_settings,
+            settings=settings,
+            pre_show_callback=self.on_notification_will_show
         )
+
+    def on_notification_will_show(self, notification: Notification):
+        notification.setFrameStyle(QFrame.NoFrame)
+        # notification.setLineWidth(2)
+        notification.setContentsMargins(10, 10, 10, 10)
+        notification.setStyleSheet("QLabel{ border-radius: 25px; }")
