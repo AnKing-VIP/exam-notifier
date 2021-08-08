@@ -37,7 +37,7 @@ from anki.consts import QUEUE_TYPE_REV
 
 from .deck_config import DeckConfigService
 from .errors import AnkiObjectError
-from .notifications import ExamNotification, NotificationService
+from .notifications import ExamNotificationContent, NotificationServiceAdapter
 
 if TYPE_CHECKING:
     from anki.cards import Card
@@ -51,11 +51,11 @@ class ReviewService:
         self,
         main_window: "AnkiQt",
         deck_config_service: DeckConfigService,
-        notification_service: NotificationService,
+        notification_service_adapter: NotificationServiceAdapter,
     ):
         self._main_window = main_window
         self._deck_config_service = deck_config_service
-        self._notification_service = notification_service
+        self._notification_service_adapter = notification_service_adapter
 
     def on_reviewer_did_show_question(self, card: "Card"):
         if card.queue != QUEUE_TYPE_REV:  # not a review
@@ -85,12 +85,12 @@ class ReviewService:
 
         days_past_exam = (datetime_next_review - datetime_exam).days
 
-        notification = ExamNotification(
+        notification_content = ExamNotificationContent(
             days_past_exam=days_past_exam, exam_settings=exam_settings
         )
 
-        self._notification_service.notify(
-            notification=notification, parent=self._main_window
+        self._notification_service_adapter.notify(
+            notification_content=notification_content
         )
 
     @property

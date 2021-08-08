@@ -29,17 +29,18 @@
 #
 # Any modifications to this file must keep this entire header intact.
 
+from __future__ import annotations
+
 from abc import ABC, abstractproperty
 from dataclasses import dataclass
-from typing import Optional
 
-from aqt.utils import tooltip
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtCore import QObject, pyqtSignal
 
 from .deck_config import ExamSettings
+from .libaddon.gui.notifications import NotificationService, NotificationSettings
 
 
-class Notification(ABC):
+class NotificationContent(ABC):
     """Class describing notification content"""
 
     @abstractproperty
@@ -48,7 +49,7 @@ class Notification(ABC):
 
 
 @dataclass
-class ExamNotification(Notification):
+class ExamNotificationContent(NotificationContent):
     days_past_exam: int
     exam_settings: ExamSettings
 
@@ -59,16 +60,35 @@ class ExamNotification(Notification):
         return f"""
 <b>Exam Notifier</b><br>
 If you answer this card with <span style="color:green;">Good</span> you will<br>
-see it <b>{self.days_past_exam}</b> days after your{exam_name_str} exam.
+see it <b>{self.days_past_exam}</b> days after your{exam_name_str} exam.<br>
+<center><a href="#reschedule">Reschedule now</a></center>
 """
 
 
-class NotificationService:
+class ExamNotificationLinkhandler(QObject):
+
+    reschedule_requested = pyqtSignal()
+
+    def __call__(self, link: str):
+        print(f"link {link} requested")
+
+
+class NotificationServiceAdapter:
+    def __init__(
+        self,
+        notification_service: NotificationService,
+        link_handler: ExamNotificationLinkhandler,
+    ):
+        self._notification_service = notification_service
+        self._link_handler = link_handler
+
     def notify(
         self,
-        notification: Notification,
-        period: int = 3000,
-        parent: Optional[QWidget] = None,
+        notification_content: NotificationContent,
+        notification_settings: NotificationSettings = NotificationSettings(),
     ):
-        # TODO: custom notification system instead of aqt.tooltip
-        tooltip(msg=notification.message, period=period, parent=parent)
+        self._notification_service.notify(
+            message=notification_content.message,
+            link_handler=self._link_handler,
+            settings=notification_settings,
+        )

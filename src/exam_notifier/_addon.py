@@ -42,8 +42,10 @@ from .deck_options_legacy import (
     ExamConfigTab,
 )
 from .libaddon.consts import set_addon_properties
-from .notifications import NotificationService
+from .notifications import ExamNotificationLinkhandler, NotificationServiceAdapter
 from .reviewer import ReviewerSubscriber, ReviewService
+
+from .libaddon.gui.notifications import NotificationService
 
 if TYPE_CHECKING:
     assert mw is not None
@@ -74,14 +76,19 @@ deck_config_dialog_subscriber.subscribe()
 
 # Notifications ####
 
-notification_service = NotificationService()
+notification_link_handler = ExamNotificationLinkhandler()
+notification_service = NotificationService(progress_manager=mw.progress, parent=mw)
+notification_service_adapter = NotificationServiceAdapter(
+    notification_service=notification_service, link_handler=notification_link_handler
+)
 
 # Reviewer ####
 
 review_service = ReviewService(
     main_window=mw,
     deck_config_service=deck_config_service,
-    notification_service=notification_service,
+    notification_service_adapter=notification_service_adapter,
 )
+
 reviewer_subscriber = ReviewerSubscriber(review_service=review_service)
 reviewer_subscriber.subscribe()
