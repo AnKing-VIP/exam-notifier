@@ -1,4 +1,4 @@
-<p align="center"><img src="screenshots/logo.png"></p>
+<p align="center"><img src="screenshots/notification.png"></p>
 
 <h2 align="center">Exam Notifier for Anki</h2>
 
@@ -12,9 +12,9 @@
 <a title="Follow me on Twitter" href="https://twitter.com/intent/user?screen_name=glutanimate"><img src="https://img.shields.io/twitter/follow/glutanimate.svg"></a>
 </p>
 
-> Intro quip
+> Be aware of your exams and plan accordingly
 
-This is an add-on for the spaced-repetition flashcard app [Anki](https://apps.ankiweb.net/).
+Exam Notifier is an add-on for the spaced-repetition flashcard app [Anki](https://apps.ankiweb.net/). It provides users with the ability to be notified about card repetitions falling behind an upcoming exam date, allowing them to reschedule the card if deemed necessary.
 
 ### Table of Contents <!-- omit in toc -->
 
