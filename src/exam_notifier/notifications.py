@@ -48,6 +48,9 @@ from .libaddon.gui.notifications import (
     NotificationSettings,
 )
 
+from .consts import ADDON
+
+from ._version import __version__
 
 def maybe_pluralize(count: float, term: str) -> str:
     return term + "s" if abs(count) > 1 else term
@@ -83,25 +86,43 @@ Next review (<span style="color:green;">Good</span>): <b>{self.days_past_exam}</
  until exam)</span></center>
 <p style="font-size: small">&nbsp;</p>
 <table cellpadding=0 style="margin: 0; padding: 0;" width="100%">
-    <td width="50%" align="left"><a style="text-decoration: none;" href="https://www.patreon.com/glutanimate">
-        <span style="font-size: small; color: #785959;">♥ Support Exam Notifier</span>
-    </a></td>
-    <td width="50%" align="right"><a style="text-decoration: none;" href="https://courses.ankipalace.com">
-        <span style="font-size: small; color: #785959;">▶ Master Its Use</span>
+    <td width="50%" align="left">
+        <span style="font-size: small; color: #785959;">By Glutanimate & AnKing</span>
+    </td>
+    <td width="50%" align="right"><a style="text-decoration: none;" href="#contribute">
+        <span style="font-size: small; color: #785959;">♥ Support our Work</span>
     </a></td>
 </table>
 """
 
 
+from .libaddon.gui.dialog_contrib import ContribDialog
+from aqt import mw
+
+from .gui.forms import contrib
+from .gui import initialize_qt_resources
+
+initialize_qt_resources()
+
+class CollabContributionDialog(ContribDialog):
+    def _setupEvents(self):
+        self.form.btnGlutanimate.clicked.connect(
+            lambda: openLink(ADDON.LINKS["bepatron"])
+        )
+        self.form.btnAnKing.clicked.connect(
+            lambda: openLink("https://patreon.com/ankingmed")
+        )
+
+
 class ExamNotificationLinkhandler(QObject):
 
     reschedule_requested = pyqtSignal("qint64")
-    external_link_called = pyqtSignal()
+    new_window_opened = pyqtSignal()
 
     @pyqtSlot(str)
     def __call__(self, link: str):
         if link.startswith("http"):
-            self.external_link_called.emit()
+            self.new_window_opened.emit()
             openLink(link)
             return
 
@@ -111,6 +132,10 @@ class ExamNotificationLinkhandler(QObject):
         if command == "reschedule" and data is not None:
             card_id = int(data)
             self.reschedule_requested.emit(card_id)
+        elif command == "contribute":
+            self.new_window_opened.emit()
+            dialog = CollabContributionDialog(contrib, parent=mw)
+            dialog.show()
 
         else:
             print(f"Unrecognized link command {command}")
@@ -151,4 +176,4 @@ class NotificationServiceAdapter:
 
     def on_notification_will_show(self, notification: Notification):
         notification.setFrameStyle(QFrame.NoFrame)
-        notification.setContentsMargins(10, 10, 10, 5)
+        notification.setContentsMargins(10, 10, 5, 5)
