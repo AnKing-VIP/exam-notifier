@@ -40,6 +40,7 @@ from typing import TYPE_CHECKING, Callable, List, Optional, Type
 from PyQt5.QtCore import QEvent, QObject, QPoint, Qt, QTimer, pyqtSignal
 from PyQt5.QtGui import QCloseEvent, QColor, QMouseEvent, QPalette, QResizeEvent
 from PyQt5.QtWidgets import QApplication, QFrame, QLabel, QWidget
+from PyQt5.Qt import QCursor
 
 if TYPE_CHECKING:
     from aqt import AnkiApp
@@ -222,6 +223,10 @@ class Notification(QLabel):
             isinstance(old_window, wtype) for wtype in focus_exceptions
         ):
             # switching back from an excluded window should not cause notif closing
+            pass
+        elif new_window is None and QApplication.widgetAt(QCursor.pos()) == self:
+            # clicking on self should not dismiss notification when not configured as
+            # such (Windows bug)
             pass
         elif new_window is None:
             # switched focus away from application
