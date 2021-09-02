@@ -30,6 +30,7 @@
 # Any modifications to this file must keep this entire header intact.
 
 from typing import TYPE_CHECKING, Final
+from pathlib import Path
 
 from aqt import mw
 
@@ -46,6 +47,7 @@ from .notifications import ExamNotificationLinkhandler, NotificationServiceAdapt
 from .reviewer import ReviewerSubscriber, ReviewService
 
 from .libaddon.gui.notifications import NotificationService
+from .libaddon.platform import is_anki_version_in_range
 
 if TYPE_CHECKING:
     assert mw is not None
@@ -72,7 +74,27 @@ deck_config_dialog_service = DeckConfigDialogService(
 deck_config_dialog_subscriber = DeckConfigDialogSubscriber(deck_config_dialog_service)
 deck_config_dialog_subscriber.subscribe()
 
-# Web (new) TODO
+# Web (new)
+
+if is_anki_version_in_range("2.1.45"):
+    from .deck_options import (
+        WebContentInjector,
+        DeckOptionsPatcher,
+        DeckOptionsSubscriber,
+    )
+
+    web_folder_path = web_folder_path = Path(__file__).parent / "web"
+
+    web_content_injector = WebContentInjector(
+        source_folder=web_folder_path, web_files_name_stem="deck_options"
+    )
+    deck_options_patcher = DeckOptionsPatcher(
+        main_window=mw, web_content_injector=web_content_injector
+    )
+    deck_options_subscriber = DeckOptionsSubscriber(
+        deck_options_patcher=deck_options_patcher
+    )
+    deck_options_subscriber.subscribe()
 
 # Notifications ####
 
