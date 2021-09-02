@@ -79,7 +79,7 @@ class DeckConfigService:
         self.set_settings(deck_config=deck_config, settings=settings)
 
     def set_settings(self, deck_config: "DeckConfigDict", settings: ExamSettings):
-        deck_config[self._settings_key] = asdict(ExamSettings)
+        deck_config[self._settings_key] = asdict(settings)
         try:
             self._deck_manager.update_config(deck_config)
         except AttributeError:
