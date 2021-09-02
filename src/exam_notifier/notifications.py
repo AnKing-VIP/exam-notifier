@@ -75,7 +75,11 @@ class ExamNotificationContent(NotificationContent):
     def message(self) -> str:
         exam_name = self.exam_settings.exam_name
         exam_name_str = f" {exam_name}" if exam_name else ""
-        return f"""
+        return f"""\
+            
+<div style="text-align: right; margin-bottom: 5px;">
+<a style="text-decoration: none;" href="#close"><span style="font-size: medium; font-weight: bold; color: #785959;">x</span></a>
+</div>
 <b>Exam Notifier</b>: Card due past{exam_name_str} exam<br><br>
 
 Next review (<span style="color:green;">Good</span>): <b>{self.days_past_exam}</b>
@@ -89,7 +93,7 @@ Next review (<span style="color:green;">Good</span>): <b>{self.days_past_exam}</
     <td width="50%" align="left">
         <span style="font-size: small; color: #785959;">By Glutanimate & AnKing</span>
     </td>
-    <td width="50%" align="right"><a style="text-decoration: none;" href="#contribute">
+    <td width="50%" align="right"><a style="text-decoration: underline;" href="#contribute">
         <span style="font-size: small; color: #785959;">♥ Support our Work</span>
     </a></td>
 </table>
@@ -118,6 +122,7 @@ class CollabContributionDialog(ContribDialog):
 class ExamNotificationLinkhandler(QObject):
 
     reschedule_requested = pyqtSignal("qint64")
+    close_requested = pyqtSignal()
 
     @pyqtSlot(str)
     def __call__(self, link: str):
@@ -134,6 +139,8 @@ class ExamNotificationLinkhandler(QObject):
         elif command == "contribute":
             dialog = CollabContributionDialog(contrib, parent=mw)
             dialog.show()
+        elif command == "close":
+            self.close_requested.emit()
 
         else:
             print(f"Unrecognized link command {command}")
@@ -160,6 +167,7 @@ class NotificationServiceAdapter:
                 bg_color="#fdf0d5",
                 fg_color="#003049",
                 duration=None,
+                dismiss_on_click=False,
                 focus_behavior=FocusBehavior.close_on_window_focus_lost,
                 focus_behavior_exceptions=[GetTextDialog],
             )
@@ -177,4 +185,4 @@ class NotificationServiceAdapter:
 
     def on_notification_will_show(self, notification: Notification):
         notification.setFrameStyle(QFrame.NoFrame)
-        notification.setContentsMargins(10, 10, 5, 5)
+        notification.setContentsMargins(10, 3, 5, 5)
