@@ -215,19 +215,20 @@ class Notification(QLabel):
         focus_behavior = self._settings.focus_behavior
         focus_exceptions = self._settings.focus_behavior_exceptions
         parent_window = self.parent().window()
+        old_window = old_widget.window() if old_widget else None
         new_window = new_widget.window() if new_widget else None
 
-        if (
-            new_window is None
-            and focus_behavior == FocusBehavior.close_on_application_focus_lost
+        if focus_exceptions and any(
+            isinstance(old_window, wtype) for wtype in focus_exceptions
         ):
+            # switching back from an excluded window should not cause notif closing
+            pass
+        elif new_window is None:
+            # switched focus away from application
             self.close()
-        elif not new_window or (
-            new_window != parent_window
-            and (
-                not focus_exceptions
-                or all(not isinstance(new_window, wtype) for wtype in focus_exceptions)
-            )
+        elif new_window != parent_window and (
+            not focus_exceptions
+            or (all(not isinstance(new_window, wtype) for wtype in focus_exceptions))
         ):
             # switched to other window within same application that's not excluded
             if focus_behavior == FocusBehavior.close_on_window_focus_lost:
