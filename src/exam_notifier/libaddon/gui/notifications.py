@@ -218,23 +218,28 @@ class Notification(QLabel):
         new_window = new_widget.window() if new_widget else None
 
         if (
-            focus_behavior == FocusBehavior.close_on_application_focus_lost
-            and new_window is None
+            new_window is None
+            and focus_behavior == FocusBehavior.close_on_application_focus_lost
         ):
             self.close()
-        elif focus_behavior == FocusBehavior.close_on_window_focus_lost and (
-            not new_window
-            or (
-                new_window != parent_window
-                and (
-                    not focus_exceptions
-                    or all(
-                        not isinstance(new_window, wtype) for wtype in focus_exceptions
-                    )
-                )
+        elif not new_window or (
+            new_window != parent_window
+            and (
+                not focus_exceptions
+                or all(not isinstance(new_window, wtype) for wtype in focus_exceptions)
             )
         ):
-            self.close()
+            # switched to other window within same application that's not excluded
+            if focus_behavior == FocusBehavior.close_on_window_focus_lost:
+                self.close()
+            elif focus_behavior == FocusBehavior.lower_on_window_focus_lost:
+                self.setWindowFlag(Qt.ToolTip, on=False)
+        elif (
+            new_window == parent_window
+            and focus_behavior == FocusBehavior.lower_on_window_focus_lost
+        ):
+            self.setWindowFlag(Qt.ToolTip, on=True)
+            self.show()
 
     def mousePressEvent(self, event: QMouseEvent):
         if (
