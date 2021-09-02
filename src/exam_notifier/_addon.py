@@ -81,9 +81,6 @@ notification_service = NotificationService(progress_manager=mw.progress, parent=
 notification_service_adapter = NotificationServiceAdapter(
     notification_service=notification_service, link_handler=notification_link_handler
 )
-notification_link_handler.new_window_opened.connect(
-    notification_service_adapter.close_current_notification
-)
 
 # Reviewer ####
 

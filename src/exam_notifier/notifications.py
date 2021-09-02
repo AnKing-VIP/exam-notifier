@@ -38,7 +38,7 @@ from typing import Optional
 from PyQt5.QtWidgets import QFrame
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
-from aqt.utils import openLink
+from aqt.utils import openLink, GetTextDialog
 
 from .deck_config import ExamSettings
 from .libaddon.gui.notifications import (
@@ -46,11 +46,11 @@ from .libaddon.gui.notifications import (
     NotificationHAlignment,
     NotificationService,
     NotificationSettings,
+    FocusBehavior,
 )
 
 from .consts import ADDON
 
-from ._version import __version__
 
 def maybe_pluralize(count: float, term: str) -> str:
     return term + "s" if abs(count) > 1 else term
@@ -104,6 +104,7 @@ from .gui import initialize_qt_resources
 
 initialize_qt_resources()
 
+
 class CollabContributionDialog(ContribDialog):
     def _setupEvents(self):
         self.form.btnGlutanimate.clicked.connect(
@@ -117,12 +118,10 @@ class CollabContributionDialog(ContribDialog):
 class ExamNotificationLinkhandler(QObject):
 
     reschedule_requested = pyqtSignal("qint64")
-    new_window_opened = pyqtSignal()
 
     @pyqtSlot(str)
     def __call__(self, link: str):
         if link.startswith("http"):
-            self.new_window_opened.emit()
             openLink(link)
             return
 
@@ -133,7 +132,6 @@ class ExamNotificationLinkhandler(QObject):
             card_id = int(data)
             self.reschedule_requested.emit(card_id)
         elif command == "contribute":
-            self.new_window_opened.emit()
             dialog = CollabContributionDialog(contrib, parent=mw)
             dialog.show()
 
@@ -162,7 +160,10 @@ class NotificationServiceAdapter:
                 bg_color="#fdf0d5",
                 fg_color="#003049",
                 duration=None,
+                focus_behavior=FocusBehavior.close_on_window_focus_lost,
+                focus_behavior_exceptions=[GetTextDialog],
             )
+            # ^ add exception to keep notification open for reschedule dialog
 
         self._notification_service.notify(
             message=notification_content.message,
