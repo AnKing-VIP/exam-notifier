@@ -47,7 +47,10 @@ from .gui.forms import deckconf_exam_tab
 if TYPE_CHECKING:
     from anki.decks import DeckConfigDict
 
-from .deck_config import ExamSettings, DeckConfigService
+from aqt.utils import openLink
+
+from .consts import ADDON
+from .deck_config import DeckConfigService, ExamSettings
 
 
 class ExamConfigTab(QWidget):
@@ -58,6 +61,12 @@ class ExamConfigTab(QWidget):
         unix_time_now = int(round(datetime.now().timestamp()))
         self.form.exam_date.setMinimumDateTime(
             self._qdatetime_from_epoch(unix_time_now)
+        )
+        self.form.btnGlutanimate.clicked.connect(
+            lambda: openLink(ADDON.LINKS["bepatron"])
+        )
+        self.form.btnAnKing.clicked.connect(
+            lambda: openLink("https://patreon.com/ankingmed")
         )
 
     def set_settings(self, settings: ExamSettings):
@@ -141,11 +150,9 @@ class DeckConfigDialogSubscriber:
         self._deck_config_service = deck_config_service
 
     def subscribe(self):
-        from aqt.gui_hooks import (
-            deck_conf_did_load_config,
-            deck_conf_did_setup_ui_form,
-            deck_conf_will_save_config,
-        )
+        from aqt.gui_hooks import (deck_conf_did_load_config,
+                                   deck_conf_did_setup_ui_form,
+                                   deck_conf_will_save_config)
 
         deck_conf_did_setup_ui_form.append(
             self._deck_config_service.on_deck_config_gui_loaded

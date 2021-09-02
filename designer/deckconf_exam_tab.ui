@@ -111,17 +111,6 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>PLACEHOLDER: General Exam Notifier Options</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <spacer name="verticalSpacer_2">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -138,21 +127,88 @@
     </spacer>
    </item>
    <item>
-    <widget class="QLabel" name="label_5">
-     <property name="text">
-      <string>PLACEHOLDER:</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Want to learn how to use Exam Notifier optimally? Then check out &lt;a href=&quot;https://youtube.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;the official video tutorial&lt;/span&gt;&lt;/a&gt; by &lt;a href=&quot;https://instagram.com/ankingmed&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;@AnKingMed&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Hi there :) ! Enjoy &lt;b&gt;Exam Notifier&lt;/b&gt;? Then please consider supporting our work, so we can keep working on projects like this:</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
      </property>
     </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_4">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>10</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="btnGlutanimate">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Become a Patron and receive 
+exclusive add-ons &amp;&amp; other goodies!</string>
+       </property>
+       <property name="text">
+        <string>Glutanimate</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../resources/icons.qrc">
+         <normaloff>:/exam-notifier/icons/patreon.svg</normaloff>:/exam-notifier/icons/patreon.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>32</width>
+         <height>32</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnAnKing">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Become a Patron and receive 
+exclusive content by the AnKing team!</string>
+       </property>
+       <property name="text">
+        <string>AnKing</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../resources/icons.qrc">
+         <normaloff>:/exam-notifier/icons/patreon.svg</normaloff>:/exam-notifier/icons/patreon.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>32</width>
+         <height>32</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <spacer name="verticalSpacer_3">
@@ -173,7 +229,7 @@
    <item>
     <widget class="QLabel" name="label_4">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Want to keep up-to-date with new releases? Follow: &lt;a href=&quot;https://twitter.com/glutanimate&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;@glutanimate&lt;/span&gt;&lt;/a&gt; on IG or Twitter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Each contribution is greatly appreciated and will help us &lt;b&gt;update and improve&lt;/b&gt; Exam Notifier as time goes by. Thank you!</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -185,9 +241,6 @@
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::MinimumExpanding</enum>
-     </property>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
@@ -198,6 +251,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources/icons.qrc"/>
+  <include location="../resources/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
