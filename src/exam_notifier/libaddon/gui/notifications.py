@@ -88,7 +88,7 @@ class NotificationSettings:
     fg_color: str = "#000000"
     bg_color: str = "#FFFFFF"
     dismiss_on_click: bool = True
-    focus_behavior: FocusBehavior = FocusBehavior.close_on_window_focus_lost
+    focus_behavior: FocusBehavior = FocusBehavior.always_on_top
     focus_behavior_exceptions: Optional[List[Type[QWidget]]] = None
 
 
