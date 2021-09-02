@@ -35,13 +35,14 @@ Customizable notification pop-up
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import TYPE_CHECKING, Callable, Optional
+from typing import TYPE_CHECKING, Callable, List, Optional, Type
 
-from PyQt5.QtCore import QEvent, QObject, QPoint, Qt, QTimer, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import QEvent, QObject, QPoint, Qt, QTimer, pyqtSignal
 from PyQt5.QtGui import QCloseEvent, QColor, QMouseEvent, QPalette, QResizeEvent
-from PyQt5.QtWidgets import QFrame, QLabel, QWidget
+from PyQt5.QtWidgets import QApplication, QFrame, QLabel, QWidget
 
 if TYPE_CHECKING:
+    from aqt import AnkiApp
     from aqt.progress import ProgressManager
 
 
@@ -57,13 +58,26 @@ class NotificationVAlignment(Enum):
     bottom = "bottom"
 
 
+class FocusBehavior(Enum):
+    always_on_top = "always_on_top"
+    close_on_window_focus_lost = "close_on_window_focus_lost"
+    lower_on_window_focus_lost = "lower_on_window_focus_lost"
+    close_on_application_focus_lost = "close_on_application_focus_lost"
+
+
 @dataclass
 class NotificationSettings:
     """Notification settings
 
     Args:
         duration: Time in ms the notification should be shown for. Set to None or 0
-                  for a persistent tooltip that has to be dismissed manually
+            for a persistent tooltip that has to be dismissed manually
+        focus_behavior_exceptions: Only relevant when focus behavior is not set to
+            FocusBehavior.always_on_top.
+            List of window classes for which the focus behavior set does not apply,
+            i.e. for which the notification stays visible and on top of even if the
+            window focus changes.
+
     """
 
     duration: Optional[int] = 3000
@@ -74,6 +88,8 @@ class NotificationSettings:
     fg_color: str = "#000000"
     bg_color: str = "#FFFFFF"
     dismiss_on_click: bool = True
+    focus_behavior: FocusBehavior = FocusBehavior.close_on_window_focus_lost
+    focus_behavior_exceptions: Optional[List[Type[QWidget]]] = None
 
 
 class NotificationEventFilter(QObject):
@@ -137,7 +153,7 @@ class NotificationService(QObject):
             self._current_timer = self._progress_manager.timer(
                 3000, self.close_current_notification, False
             )
-        
+
         notification.closed.connect(self.close_current_notification)
 
     def close_current_notification(self):
@@ -166,7 +182,7 @@ class Notification(QLabel):
 
     # Anki dialog manager support
     silentlyClose = True
-    
+
     closed = pyqtSignal()
 
     def __init__(
@@ -189,6 +205,37 @@ class Notification(QLabel):
         palette.setColor(QPalette.WindowText, QColor(self._settings.fg_color))
         self.setPalette(palette)
 
+        if parent and self._settings.focus_behavior != FocusBehavior.always_on_top:
+            app: "AnkiApp" = QApplication.instance()  # type: ignore[assignment]
+            app.focusChanged.connect(self._on_app_focus_changed)
+
+    def _on_app_focus_changed(
+        self, old_widget: Optional[QWidget], new_widget: Optional[QWidget]
+    ):
+        focus_behavior = self._settings.focus_behavior
+        focus_exceptions = self._settings.focus_behavior_exceptions
+        parent_window = self.parent().window()
+        new_window = new_widget.window() if new_widget else None
+
+        if (
+            focus_behavior == FocusBehavior.close_on_application_focus_lost
+            and new_window is None
+        ):
+            self.close()
+        elif focus_behavior == FocusBehavior.close_on_window_focus_lost and (
+            not new_window
+            or (
+                new_window != parent_window
+                and (
+                    not focus_exceptions
+                    or all(
+                        not isinstance(new_window, wtype) for wtype in focus_exceptions
+                    )
+                )
+            )
+        ):
+            self.close()
+
     def mousePressEvent(self, event: QMouseEvent):
         if (
             not self._settings.dismiss_on_click
@@ -199,7 +246,7 @@ class Notification(QLabel):
             return super().mousePressEvent(event)
         event.accept()
         self.close()
-    
+
     def closeEvent(self, event: QCloseEvent):
         self.closed.emit()
         return super().closeEvent(event)
