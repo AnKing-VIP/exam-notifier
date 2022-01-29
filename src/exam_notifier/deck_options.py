@@ -41,11 +41,6 @@ from weakref import ReferenceType
 
 from aqt import gui_hooks
 
-try:
-    from PyQt5 import sip
-except ImportError:
-    import sip  # type: ignore
-
 from anki.decks import DeckId
 from aqt.deckconf import DeckConf
 from aqt.deckoptions import DeckOptionsDialog

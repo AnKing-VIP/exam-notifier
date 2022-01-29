@@ -39,8 +39,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Optional, Type
 
 from aqt.deckconf import DeckConf
-from PyQt5.QtCore import QDateTime
-from PyQt5.QtWidgets import QWidget
+from aqt.qt import QDateTime, QWidget
 
 from .gui.forms import deckconf_exam_tab
 
@@ -85,8 +84,7 @@ class ExamConfigTab(QWidget):
 
     @staticmethod
     def _qdatetime_from_epoch(unix_epoch: int) -> QDateTime:
-        qdatetime = QDateTime()
-        qdatetime.setTime_t(unix_epoch)
+        qdatetime = QDateTime.fromSecsSinceEpoch(unix_epoch)
         return qdatetime
 
     @staticmethod

@@ -35,8 +35,7 @@ from abc import ABC, abstractproperty
 from dataclasses import dataclass
 from typing import Optional
 
-from PyQt5.QtWidgets import QFrame
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
+from aqt.qt import QFrame, QObject, pyqtSignal, pyqtSlot
 
 from aqt.utils import openLink, GetTextDialog
 
@@ -175,7 +174,7 @@ class NotificationServiceAdapter:
 
         self._notification_service.notify(
             message=notification_content.message,
-            link_handler=self._link_handler,
+            link_handler=self._link_handler, # type: ignore
             settings=notification_settings,
             pre_show_callback=self.on_notification_will_show,
         )
@@ -184,5 +183,5 @@ class NotificationServiceAdapter:
         self._notification_service.close_current_notification()
 
     def on_notification_will_show(self, notification: Notification):
-        notification.setFrameStyle(QFrame.NoFrame)
+        notification.setFrameStyle(QFrame.Shape.NoFrame)
         notification.setContentsMargins(10, 3, 5, 5)

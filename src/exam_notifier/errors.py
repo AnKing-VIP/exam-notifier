@@ -32,4 +32,3 @@
 
 class AnkiObjectError(Exception):
     pass
-

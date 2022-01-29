@@ -32,16 +32,15 @@
 
 from datetime import datetime, timedelta
 from typing import TYPE_CHECKING
-from PyQt5.QtCore import QObject, pyqtSlot
-
-from aqt.utils import showWarning
 
 from anki.consts import QUEUE_TYPE_REV
+from aqt.qt import QObject, pyqtSlot
+from aqt.utils import showWarning
 
+from .consts import ADDON
 from .deck_config import DeckConfigService
 from .errors import AnkiObjectError
 from .notifications import ExamNotificationContent, NotificationServiceAdapter
-from .consts import ADDON
 
 if TYPE_CHECKING:
     from anki.cards import Card
