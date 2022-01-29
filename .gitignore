@@ -42,6 +42,7 @@ research
 todo
 # Assets
 resources/icons/optional
+icons/optional
 # Anki
 src/*/meta.json
 src/*/manifest.json
