@@ -36,19 +36,17 @@ from dataclasses import dataclass
 from typing import Optional
 
 from aqt.qt import QFrame, QObject, pyqtSignal, pyqtSlot
+from aqt.utils import GetTextDialog, openLink
 
-from aqt.utils import openLink, GetTextDialog
-
+from .consts import ADDON
 from .deck_config import ExamSettings
 from .libaddon.gui.notifications import (
+    FocusBehavior,
     Notification,
     NotificationHAlignment,
     NotificationService,
     NotificationSettings,
-    FocusBehavior,
 )
-
-from .consts import ADDON
 
 
 def maybe_pluralize(count: float, term: str) -> str:
@@ -99,16 +97,23 @@ Next review (<span style="color:green;">Good</span>): <b>{self.days_past_exam}</
 """
 
 
-from .libaddon.gui.dialog_contrib import ContribDialog
 from aqt import mw
+from aqt.qt import QSize
 
+from .gui import asset_provider
 from .gui.forms import contrib
-from .gui import initialize_qt_resources
-
-initialize_qt_resources()
+from .libaddon.gui.dialog_contrib import ContribDialog
 
 
 class CollabContributionDialog(ContribDialog):
+    def _setupUI(self):
+        for button in (self.form.btnAnKing, self.form.btnGlutanimate):
+            icon = asset_provider.get_icon("icons/patreon.svg")
+            button.setIcon(icon)
+            button.setIconSize(QSize(32, 32))
+        self.form.labHeart.setPixmap(asset_provider.get_pixmap("icons/heart.svg"))
+        return super()._setupUI()
+
     def _setupEvents(self):
         self.form.btnGlutanimate.clicked.connect(
             lambda: openLink(ADDON.LINKS["bepatron"])
@@ -174,7 +179,7 @@ class NotificationServiceAdapter:
 
         self._notification_service.notify(
             message=notification_content.message,
-            link_handler=self._link_handler, # type: ignore
+            link_handler=self._link_handler,  # type: ignore
             settings=notification_settings,
             pre_show_callback=self.on_notification_will_show,
         )

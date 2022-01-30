@@ -34,8 +34,13 @@ Package that bundles UI components used by the add-on
 (e.g. dialogs, Qt forms, other resources)
 """
 
-def initialize_qt_resources():
-    """
-    Load Qt resources into memory
-    """
-    from . import resources  # noqa: F401
+
+from pathlib import Path
+
+from ..libaddon.gui.assets import AssetProvider
+
+# UI assets
+
+asset_provider = AssetProvider(
+    prefix="exam-notifier", asset_root_path=str(Path(__file__).parent.parent / "assets")
+)

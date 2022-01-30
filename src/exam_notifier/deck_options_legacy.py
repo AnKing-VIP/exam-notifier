@@ -39,8 +39,9 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Optional, Type
 
 from aqt.deckconf import DeckConf
-from aqt.qt import QDateTime, QWidget
+from aqt.qt import QDateTime, QIcon, QPixmap, QSize, QWidget
 
+from .gui import asset_provider
 from .gui.forms import deckconf_exam_tab
 
 if TYPE_CHECKING:
@@ -67,6 +68,10 @@ class ExamConfigTab(QWidget):
         self.form.btnAnKing.clicked.connect(
             lambda: openLink("https://patreon.com/ankingmed")
         )
+        for button in (self.form.btnGlutanimate, self.form.btnAnKing):
+            icon = asset_provider.get_icon("icons/patreon.svg")
+            button.setIcon(icon)
+            button.setIconSize(QSize(32, 32))
 
     def set_settings(self, settings: ExamSettings):
         self.form.exam_group_box.setChecked(settings.enabled)
@@ -148,9 +153,11 @@ class DeckConfigDialogSubscriber:
         self._deck_config_service = deck_config_service
 
     def subscribe(self):
-        from aqt.gui_hooks import (deck_conf_did_load_config,
-                                   deck_conf_did_setup_ui_form,
-                                   deck_conf_will_save_config)
+        from aqt.gui_hooks import (
+            deck_conf_did_load_config,
+            deck_conf_did_setup_ui_form,
+            deck_conf_will_save_config,
+        )
 
         deck_conf_did_setup_ui_form.append(
             self._deck_config_service.on_deck_config_gui_loaded
