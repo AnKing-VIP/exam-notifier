@@ -48,9 +48,6 @@
          <property name="text">
           <string/>
          </property>
-         <property name="pixmap">
-          <pixmap>:/exam_notifier/icons/heart.svg</pixmap>
-         </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
@@ -140,10 +137,6 @@ exclusive add-ons &amp;&amp; other goodies!</string>
          <property name="text">
           <string>Glutanimate</string>
          </property>
-         <property name="icon">
-          <iconset resource="../resources/icons.qrc">
-           <normaloff>:/exam-notifier/icons/patreon.svg</normaloff>:/exam-notifier/icons/patreon.svg</iconset>
-         </property>
          <property name="iconSize">
           <size>
            <width>32</width>
@@ -166,10 +159,6 @@ exclusive content by the AnKing team!</string>
          </property>
          <property name="text">
           <string>AnKing</string>
-         </property>
-         <property name="icon">
-          <iconset resource="../resources/icons.qrc">
-           <normaloff>:/exam-notifier/icons/patreon.svg</normaloff>:/exam-notifier/icons/patreon.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -223,10 +212,7 @@ exclusive content by the AnKing team!</string>
   <tabstop>btnAnKing</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
- <resources>
-  <include location="../resources/icons.qrc"/>
-  <include location="../resources/icons.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>
