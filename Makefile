@@ -1,7 +1,7 @@
 SHELL = /bin/bash
 
 PACKAGE_NAME=exam_notifier
-ASSETS_TARGET_PATH = build/dist/src/$(PACKAGE_NAME)/assets
+ASSETS_TARGET_PATH = build/dist/src/$(PACKAGE_NAME)/gui/assets
 
 SOURCE_FOLDER = src/
 TEST_FLAGS ?= -n4
@@ -25,9 +25,9 @@ help:
 
 # Perform pre-launch steps to run add-on from source
 develop:
-	mkdir -p src/$(PACKAGE_NAME)/assets/icons
-	cp -aL icons/base/. src/$(PACKAGE_NAME)/assets/icons
-	[[ -d icons/optional ]] && cp -aL icons/optional/. src/$(PACKAGE_NAME)/assets/icons
+	mkdir -p src/$(PACKAGE_NAME)/gui/assets/icons
+	cp -aL icons/base/. src/$(PACKAGE_NAME)/gui/assets/icons
+	[[ -d icons/optional ]] && cp -aL icons/optional/. src/$(PACKAGE_NAME)/gui/assets/icons
 
 # Build add-on
 build:

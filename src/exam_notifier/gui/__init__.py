@@ -42,5 +42,5 @@ from ..libaddon.gui.assets import AssetProvider
 # UI assets
 
 asset_provider = AssetProvider(
-    prefix="exam-notifier", asset_root_path=str(Path(__file__).parent.parent / "assets")
+    prefix="exam-notifier", asset_root_path=str(Path(__file__).parent / "assets")
 )

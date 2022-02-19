@@ -41,7 +41,7 @@ research
 # Docs
 todo
 # Assets
-src/*/assets
+src/*/gui/assets
 resources/icons/optional
 icons/optional
 # Anki
