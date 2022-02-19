@@ -37,10 +37,24 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import TYPE_CHECKING, Callable, List, Optional, Type
 
-from PyQt5.QtCore import QEvent, QObject, QPoint, Qt, QTimer, pyqtSignal
-from PyQt5.QtGui import QCloseEvent, QColor, QMouseEvent, QPalette, QResizeEvent
-from PyQt5.QtWidgets import QApplication, QFrame, QLabel, QWidget
-from PyQt5.Qt import QCursor
+from aqt.qt import (
+    QEvent,
+    QObject,
+    QPoint,
+    Qt,
+    QTimer,
+    pyqtSignal,
+    QCloseEvent,
+    QColor,
+    QMouseEvent,
+    QPalette,
+    QResizeEvent,
+    QApplication,
+    QFrame,
+    QLabel,
+    QWidget,
+    QCursor,
+)
 
 if TYPE_CHECKING:
     from aqt import AnkiApp
@@ -100,7 +114,7 @@ class NotificationEventFilter(QObject):
 
     def eventFilter(self, object: QObject, event: QEvent) -> bool:
         event_type = event.type()
-        if event_type == QEvent.Resize or event_type == QEvent.Move:
+        if event_type == QEvent.Type.Resize or event_type == QEvent.Type.Move:
             self._notification.update_position()
             self._notification.show()  # needed on macOS
 
@@ -196,14 +210,14 @@ class Notification(QLabel):
         super().__init__(text, parent=parent, **kwargs)
         self._settings = settings
 
-        self.setFrameStyle(QFrame.Panel)
+        self.setFrameStyle(QFrame.Shape.Panel)
         self.setLineWidth(2)
-        self.setWindowFlags(Qt.ToolTip)
+        self.setWindowFlags(Qt.WindowType.ToolTip)
         self.setContentsMargins(10, 10, 10, 10)
 
         palette = QPalette()
-        palette.setColor(QPalette.Window, QColor(self._settings.bg_color))
-        palette.setColor(QPalette.WindowText, QColor(self._settings.fg_color))
+        palette.setColor(QPalette.ColorRole.Window, QColor(self._settings.bg_color))
+        palette.setColor(QPalette.ColorRole.WindowText, QColor(self._settings.fg_color))
         self.setPalette(palette)
 
         if parent and self._settings.focus_behavior != FocusBehavior.always_on_top:
@@ -239,18 +253,18 @@ class Notification(QLabel):
             if focus_behavior == FocusBehavior.close_on_window_focus_lost:
                 self.close()
             elif focus_behavior == FocusBehavior.lower_on_window_focus_lost:
-                self.setWindowFlag(Qt.ToolTip, on=False)
+                self.setWindowFlag(Qt.WindowType.ToolTip, on=False)
         elif (
             new_window == parent_window
             and focus_behavior == FocusBehavior.lower_on_window_focus_lost
         ):
-            self.setWindowFlag(Qt.ToolTip, on=True)
+            self.setWindowFlag(Qt.WindowType.ToolTip, on=True)
             self.show()
 
     def mousePressEvent(self, event: QMouseEvent):
         if (
             not self._settings.dismiss_on_click
-            or self.cursor().shape() == Qt.PointingHandCursor
+            or self.cursor().shape() == Qt.CursorShape.PointingHandCursor
         ):
             # Do not ignore mouse press event if configured that way and/or
             # currently hovering link (as signaled by cursor shape)
