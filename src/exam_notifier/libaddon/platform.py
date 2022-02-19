@@ -33,22 +33,27 @@
 Provides information on Anki version and platform
 """
 
-from __future__ import (absolute_import, division,
-                        print_function, unicode_literals)
-
 import sys
 import os
 
 from aqt import mw
 
-from anki import version as anki_version
-from anki.utils import isMac, isWin
+try:
+    from anki.buildinfo import version as anki_version
+except (ImportError, ModuleNotFoundError):
+    from anki import version as anki_version  # type: ignore[attr-defined, no-redef]
+
+try:
+    from anki.utils import is_mac, is_win
+except (ImportError, ModuleNotFoundError):
+    from anki.utils import isMac as is_mac  # type: ignore[attr-defined, no-redef]
+    from anki.utils import isWin as is_win  # type: ignore[attr-defined, no-redef]
 
 from .utils import ensureExists
 
-if isMac:
+if is_mac:
     PLATFORM = "mac"
-elif isWin:
+elif is_win:
     PLATFORM = "win"
 else:
     PLATFORM = "lin"
