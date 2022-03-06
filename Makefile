@@ -30,8 +30,14 @@ copy_icons:
 	cp -aL icons/base/. $(ASSETS_TARGET_PATH)/icons
 	[[ -d icons/optional ]] && cp -aL icons/optional/. $(ASSETS_TARGET_PATH)/icons || true
 
+manifest:
+	aab manifest -d $(DIST_TYPE)
+
+qt:
+	aab ui
+
 # Perform pre-launch steps to run add-on from source
-develop: copy_icons
+develop: qt manifest copy_icons
 
 # Build add-on
 build:
