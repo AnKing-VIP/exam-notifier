@@ -9,7 +9,7 @@
   "copyright_start": 2019,
   "tags": "",
   "conflicts": [],
-  "targets": ["anki21"],
+  "targets": ["qt6", "qt5"],
   "min_anki_version": "2.1.41",
   "tested_anki_version": "2.1.46"
 }

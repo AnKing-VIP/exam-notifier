@@ -26,10 +26,7 @@ node_modules
 .vscode/
 # Build files
 build
-src/*/gui/forms/anki*
-src/*/gui/forms/LICENSE*
-src/*/gui/resources/anki*
-src/*/gui/resources/LICENSE*
+src/*/gui/forms
 *-anki2*.zip
 # Dev tools
 .bumpversion.cfg
