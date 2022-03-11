@@ -37,7 +37,6 @@ from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
 
 from .widgets.qt import *
-from .interface import CommonWidgetInterface
 
 __all__ = ["BasicDialog"]
 
@@ -47,7 +46,6 @@ class BasicDialog(QDialog):
     def __init__(self, form_module=None, parent=None, **kwargs):
         super(BasicDialog, self).__init__(parent=parent, **kwargs)
         self.parent = parent
-        self.interface = CommonWidgetInterface(self)
         # Set up UI from pre-generated UI form:
         if form_module:
             self.form = form_module.Ui_Dialog()

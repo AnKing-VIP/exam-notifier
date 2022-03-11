@@ -56,7 +56,7 @@ class ADDON:
     VERSION = __version__
     LICENSE = "GNU AGPLv3"
     AUTHORS = (
-        {"name": "Aristotelis P. (Glutanimate)", "years": "2019-2021",
+        {"name": "Aristotelis P. (Glutanimate)", "years": "2019-2022",
          "contact": "Glutanimate"},
     )
     AUTHOR_MAIL = "ankiglutanimate@gmail.com"
