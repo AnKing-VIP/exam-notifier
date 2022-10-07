@@ -32,5 +32,51 @@
 */
 
 $deckOptions.then((options) => {
-  options.addHtmlAddon(HTML_CONTENT, () => {});
+  options.addHtmlAddon(HTML_CONTENT, () => {
+    const examEnabledInput = document.getElementById("en-exam-enabled");
+    const examNameInput = document.getElementById("en-exam-name");
+    const examDateInput = document.getElementById("en-exam-date");
+    const mainInputsDiv = document.getElementById("en-main-inputs");
+    const glutanimateBtn = document.getElementById("en-btn-glutanimate");
+    const ankingBtn = document.getElementById("en-btn-anking");
+
+    const setInputEnabled = (enable) => {
+      examNameInput.disabled = !enable;
+      examDateInput.disabled = !enable;
+      if (enable) {
+        mainInputsDiv.classList.remove("disabled");
+      } else {
+        mainInputsDiv.classList.add("disabled");
+      }
+    };
+    examEnabledInput.addEventListener("change", (event) => {
+      const checked = event.target.checked;
+      setInputEnabled(checked);
+      const value = checked ? "true" : "false";
+      pycmd(`exam_notifier:deck_options:exam_enabled:${value}`);
+    });
+    examNameInput.addEventListener("change", (event) => {
+      const value = event.target.value;
+      pycmd(`exam_notifier:deck_options:exam_name:${value}`);
+    });
+    examDateInput.addEventListener("change", (event) => {
+      const date = event.target.valueAsDate;
+      const value = Math.round(date.getTime() / 1000); // to epoch seconds
+      pycmd(`exam_notifier:deck_options:exam_date:${value}`);
+    });
+    glutanimateBtn.addEventListener("click", (_) => {
+      pycmd(`exam_notifier:deck_options:open_link:glutanimate`);
+    });
+    ankingBtn.addEventListener("click", (_) => {
+      pycmd(`exam_notifier:deck_options:open_link:anking`);
+    });
+
+    // set input value
+    examEnabledInput.checked = EXAM_ENABLED;
+    examNameInput.value = EXAM_NAME;
+    const examDateEpoch = EXAM_DATE;
+    examDateInput.valueAsDate = new Date(examDateEpoch * 1000); // s to ms
+
+    setInputEnabled(examEnabledInput.checked);
+  });
 });

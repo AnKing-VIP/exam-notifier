@@ -93,7 +93,7 @@ if is_anki_version_in_range("2.1.45"):
         source_folder=web_folder_path, web_files_name_stem="deck_options"
     )
     deck_options_patcher = DeckOptionsPatcher(
-        main_window=mw, web_content_injector=web_content_injector
+        main_window=mw, web_content_injector=web_content_injector, deck_config_service=deck_config_service
     )
     deck_options_subscriber = DeckOptionsSubscriber(
         deck_options_patcher=deck_options_patcher

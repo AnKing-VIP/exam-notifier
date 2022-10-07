@@ -45,28 +45,43 @@ from anki.decks import DeckId
 from aqt.deckconf import DeckConf
 from aqt.deckoptions import DeckOptionsDialog
 from aqt.webview import AnkiWebView
+from aqt.utils import openLink
 
 if TYPE_CHECKING:
     from aqt.main import AnkiQt
+
+from .deck_config import DeckConfigService, ExamSettings
 
 
 class WebContentInjector:
 
     _html_placeholder = "HTML_CONTENT"
+    _patreon_svg_placeholder = "PATREON_SVG"
+    _enabled_placeholder = "EXAM_ENABLED"
+    _name_placeholder = "EXAM_NAME"
+    _date_placeholder = "EXAM_DATE"
 
     def __init__(self, source_folder: Path, web_files_name_stem: str):
         html_path = source_folder / f"{web_files_name_stem}.html"
         js_path = source_folder / f"{web_files_name_stem}.js"
+        patreon_svg_path = source_folder / "patreon.svg"
 
+        with patreon_svg_path.open() as patreon_svg_file:
+            patreon_svg = patreon_svg_file.read()
         with html_path.open() as html_file:
             html = html_file.read()
+            html = html.replace(self._patreon_svg_placeholder, patreon_svg)
         with js_path.open() as js_file:
             js = js_file.read()
 
         self._js = js.replace(self._html_placeholder, json.dumps(html))
 
-    def inject(self, web_view: AnkiWebView):
-        web_view.eval(self._js)
+    def inject(self, web_view: AnkiWebView, settings: ExamSettings):
+        js = self._js
+        js = js.replace(self._enabled_placeholder, json.dumps(settings.enabled))
+        js = js.replace(self._name_placeholder, json.dumps(settings.exam_name))
+        js = js.replace(self._date_placeholder, json.dumps(settings.exam_date))
+        web_view.eval(js)
 
 
 class DeckOptionsPatcher:
@@ -74,16 +89,22 @@ class DeckOptionsPatcher:
     _pycmd_identifier = "exam_notifier"
     _context = "deck_options"
 
-    def __init__(self, main_window: "AnkiQt", web_content_injector: WebContentInjector):
+    def __init__(self, main_window: "AnkiQt", web_content_injector: WebContentInjector, deck_config_service: DeckConfigService):
         self._main_window = main_window
         self._web_content_injector = web_content_injector
+        self._deck_config_service = deck_config_service
         self._deck_options_dialog_reference: Optional[
             ReferenceType[DeckOptionsDialog]
         ] = None
 
     def on_deck_options_did_load(self, deck_options_dialog: DeckOptionsDialog):
         self._deck_options_dialog_reference = weakref.ref(deck_options_dialog)
-        self._web_content_injector.inject(deck_options_dialog.web)
+        col = self._main_window.col
+        if col is None:
+            return
+        self._deck_config = col.decks.config_dict_for_deck_id(deck_options_dialog._deck["id"])
+        self._exam_settings = self._deck_config_service.get_settings(deck_config=self._deck_config)
+        self._web_content_injector.inject(deck_options_dialog.web, self._exam_settings)
 
     def on_webview_did_receive_js_message(
         self, handled: Tuple[bool, Any], message: str, context: Any
@@ -92,9 +113,9 @@ class DeckOptionsPatcher:
         if not message.startswith(self._pycmd_identifier):
             return handled
 
-        identifier, context, command = message.split(":")
+        identifier, context, command, value = message.split(":")
 
-        if context != self._context or command != "old_options":
+        if context != self._context:
             return handled
 
         if self._deck_options_dialog_reference is None:
@@ -116,38 +137,29 @@ class DeckOptionsPatcher:
             print("Could not access deck attribute in DeckOptions")
             return handled
 
-        deck_legacy = self._main_window.col.decks.get(DeckId(deck["id"]))
-
-        if deck_legacy is None:
-            return handled
-
-        deck_options_dialog.close()
-        self._deck_options_dialog_reference = None
-
-        def on_deck_conf_dialog_will_show(deck_conf: DeckConf):
-            tab_widget = deck_conf.form.tabWidget
-
-            exams_tab_index = None
-
-            for index in range(tab_widget.count()):
-                tab_name = tab_widget.tabText(index)
-                if tab_name == "Exams":
-                    exams_tab_index = index
-                    break
-
-            if exams_tab_index is None:
-                return
-
-            tab_widget.setCurrentIndex(exams_tab_index)
-
-        gui_hooks.deck_conf_will_show.append(on_deck_conf_dialog_will_show)
-
-        DeckConf(self._main_window, deck_legacy)
-
-        gui_hooks.deck_conf_will_show.remove(on_deck_conf_dialog_will_show)
-
+        if command == "exam_enabled":
+            enabled = value == "true"
+            self._exam_settings.enabled = enabled 
+            self._save_deck_config()
+            return (True, None)
+        elif command == "exam_name":
+            self._exam_settings.exam_name = value
+            self._save_deck_config()
+            return (True, None)
+        elif command == "exam_date":
+            self._exam_settings.exam_date = int(value)
+            self._save_deck_config()
+            return (True, None)
+        elif command == "open_link":
+            if value == "glutanimate":
+                openLink("https://www.patreon.com/glutanimate")
+            elif value == "anking":
+                openLink("https://www.patreon.com/ankingmed")
+            return (True, None)
         return handled
 
+    def _save_deck_config(self):
+        self._deck_config_service.set_settings(self._deck_config, self._exam_settings)
 
 class DeckOptionsSubscriber:
     def __init__(self, deck_options_patcher: DeckOptionsPatcher):
