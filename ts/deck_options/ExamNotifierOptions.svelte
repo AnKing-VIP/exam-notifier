@@ -142,9 +142,9 @@
     border: 1px solid #777;
   }
   button:hover {
-    backdrop-filter: brightness(0.9);
+    background-color: #f5f5f5;
   }
   :global(.night-mode) button:hover {
-    backdrop-filter: brightness(1.1);
+    background-color: #525252;
   }
 </style>
