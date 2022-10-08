@@ -3,13 +3,16 @@
   "module_name": "exam_notifier",
   "repo_name": "exam-notifier",
   "ankiweb_id": "",
-  "author": "Glutanimate",
-  "contact": "https://glutanimate.com",
-  "homepage": "https://github.com/glutanimate/exam-notifier",
+  "author": "AnKing",
+  "contact": "https://ankipalace.com",
+  "homepage": "https://ankiweb.net/shared/info/599952588",
   "copyright_start": 2019,
   "tags": "",
   "conflicts": [],
-  "targets": ["qt6", "qt5"],
+  "targets": [
+    "qt6",
+    "qt5"
+  ],
   "min_anki_version": "2.1.41",
-  "tested_anki_version": "2.1.50"
+  "tested_anki_version": "2.1.54"
 }

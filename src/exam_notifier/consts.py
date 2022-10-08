@@ -52,26 +52,27 @@ class ADDON:
     """
     NAME = "Exam Notifier"
     MODULE = "exam_notifier"
-    ID = ""
+    ID = "599952588"
     VERSION = __version__
     LICENSE = "GNU AGPLv3"
     AUTHORS = (
+        {"name": "AnKing", "years": "2022", "contact": "AnkingMed"},
         {"name": "Aristotelis P. (Glutanimate)", "years": "2019-2022",
          "contact": "Glutanimate"},
     )
-    AUTHOR_MAIL = "ankiglutanimate@gmail.com"
+    AUTHOR_MAIL = "ankingmed@gmail.com"
     LIBRARIES = ()
     CONTRIBUTORS = ()
     SPONSORS = ()
     MEMBERS_CREDITED = MEMBERS_CREDITED
     MEMBERS_TOP = MEMBERS_TOP
     LINKS = {
-        "patreon": "https://www.patreon.com/glutanimate",
-        "bepatron": "https://www.patreon.com/bePatron?u=7522179",
+        "patreon": "https://www.patreon.com/ankingmed",
+        "bepatron": "https://www.patreon.com/bePatron?u=26957953",
         "coffee": "http://ko-fi.com/glutanimate",
         "description": "https://ankiweb.net/shared/info/{}".format(ID),
         "rate": "https://ankiweb.net/shared/review/{}".format(ID),
-        "twitter": "https://twitter.com/glutanimate",
-        "youtube": "https://www.youtube.com/c/glutanimate",
+        "twitter": "https://twitter.com/ankingmed",
+        "youtube": "https://www.youtube.com/c/theanking",
         "help": ""
     }

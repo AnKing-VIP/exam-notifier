@@ -21,8 +21,7 @@ Exam Notifier provides users with the ability to be notified about card repetiti
 
 #### AnkiWeb <!-- omit in toc -->
 
-This section will be updated once the add-on is available on AnkiWeb.
-<!-- The easiest way to install Exam Notifier is through [AnkiWeb](https://ankiweb.net/shared/info/ANKIWEB_ID). -->
+The easiest way to install Exam Notifier is through [AnkiWeb](https://ankiweb.net/shared/info/599952588).
 
 #### Manual installation <!-- omit in toc -->
 
@@ -33,7 +32,7 @@ Please click on the entry corresponding to your Anki version:
 <summary><i>Anki 2.1</i></summary>
 
 1. Make sure you have the [latest version](https://apps.ankiweb.net/#download) of Anki 2.1 installed. Earlier releases (e.g. found in various Linux distros) do not support `.ankiaddon` packages.
-2. Download the latest `.ankiaddon` package from the [releases tab](https://github.com/glutanimate/exam-notifier/releases) (you might need to click on *Assets* below the description to reveal the download links)
+2. Download the latest `.ankiaddon` package from the [releases tab](https://github.com/ankingmed/exam-notifier/releases) (you might need to click on *Assets* below the description to reveal the download links)
 3. From Anki's main window, head to *Tools* → *Add-ons*
 4. Drag-and-drop the `.ankiaddon` package onto the add-ons list
 5. Restart Anki
@@ -60,7 +59,7 @@ You also need have Node and [yarn](https://yarnpkg.com/getting-started/install) 
 
 You can then proceed to build the add-on via:
 
-    git clone https://github.com/glutanimate/exam-notifier.git
+    git clone https://github.com/ankingmed/exam-notifier.git
     cd exam-notifier
     make build
 
@@ -86,7 +85,7 @@ Contributions are welcome! Please review the [contribution guidelines](./CONTRIB
 
 All credits for the original idea for this add-on go to to [The AnKing](https://www.ankingmed.com/).
 
-Exam Notifier is free and open-source software. The add-on code that runs within Anki is released under the GNU AGPLv3 license, extended by a number of additional terms. For more information please see the [LICENSE](https://github.com/glutanimate/exam-notifier/blob/master/LICENSE) file that accompanied this program.
+Exam Notifier is free and open-source software. The add-on code that runs within Anki is released under the GNU AGPLv3 license, extended by a number of additional terms. For more information please see the [LICENSE](https://github.com/ankingmed/exam-notifier/blob/master/LICENSE) file that accompanied this program.
 
 Please note that this program uses the [Libaddon](https://github.com/glutanimate/anki-libaddon/) library which comes with [its own additional terms extending the GNU AGPLv3 license](https://github.com/glutanimate/anki-libaddon/blob/master/LICENSE). You may only copy, distribute, or modify the present compilation of this program with Libaddon under the combined licensing terms specified by both licenses.
 
@@ -105,14 +104,14 @@ If you enjoy Exam Notifier, please consider supporting our work through one of t
 
 <p align="center">Make sure to check out my socials for the latest add-on updates and news:</p>
 
-<p align="center"><a href="https://twitter.com/glutanimate"><img src="https://glutanimate.com/logos/twitter.svg" alt="Twitter bird">@Glutanimate</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.youtube.com/c/glutanimate"><img src="https://glutanimate.com/logos/youtube.svg" alt="YouTube playbutton"> / Glutanimate</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.instagram.com/glutanimate"><img src="https://glutanimate.com/logos/instagram.svg" alt="Instagram"> / @Glutanimate</a></p>
+<p align="center"><a href="https://twitter.com/ankingmed"><img src="https://glutanimate.com/logos/twitter.svg" alt="Twitter bird">@AnKingMed</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.youtube.com/c/theanking"><img src="https://glutanimate.com/logos/youtube.svg" alt="YouTube playbutton"> / The AnKing</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.instagram.com/ankingmed"><img src="https://glutanimate.com/logos/instagram.svg" alt="Instagram"> / @ankingmed</a></p>
 
 <p align="center">Lots of <b>exclusive add-ons</b> and other goodies also await on my Patreon page. Make sure to take a look!:</p>
 
 
 
 <p align="center">
-<a href="https://www.patreon.com/glutanimate" title="❤️ Support me on Patreon"><img src="https://glutanimate.com/logos/patreon_button.svg"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://glutanimate.com/logos/thanks.svg">
+<a href="https://www.patreon.com/ankingmed" title="❤️ Support me on Patreon"><img src="https://glutanimate.com/logos/patreon_button.svg"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://glutanimate.com/logos/thanks.svg">
 </p>
 
 
