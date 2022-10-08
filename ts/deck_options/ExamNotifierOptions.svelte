@@ -41,6 +41,7 @@
         type="text"
         disabled={!examSettings.enabled}
         bind:value={examSettings.exam_name}
+        placeholder="e.g. USMLE Step 1"
       />
     </div>
     <div class="en-row">
