@@ -23,6 +23,11 @@ jobs:
         with:
           python-version: 3.8
       
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      
       - name: Install dependencies
         run: |
           pip install --upgrade git+https://github.com/glutanimate/anki-addon-builder.git@v1.0.0-dev.1#egg=aab[qt5,qt6]
@@ -43,7 +48,7 @@ jobs:
           git push origin tag ${{ github.event.inputs.version }}
         
       - name: Create ankiaddon file
-        run: aab build -d ankiweb
+        run: make build
       
       - name: Declare some variables
         id: vars
