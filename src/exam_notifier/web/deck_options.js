@@ -31,7 +31,7 @@
 #
 */
 
-$deckOptions.then((options) => {
+$deckOptions.then((deckOptions) => {
   options.addHtmlAddon(HTML_CONTENT, () => {
     const examEnabledInput = document.getElementById("en-exam-enabled");
     const examNameInput = document.getElementById("en-exam-name");
@@ -39,6 +39,11 @@ $deckOptions.then((options) => {
     const mainInputsDiv = document.getElementById("en-main-inputs");
     const glutanimateBtn = document.getElementById("en-btn-glutanimate");
     const ankingBtn = document.getElementById("en-btn-anking");
+
+    const auxData = deckOptions.auxData();
+    auxData.subscribe((data) => {
+      data["exam_settings"].checked;
+    });
 
     const setInputEnabled = (enable) => {
       examNameInput.disabled = !enable;

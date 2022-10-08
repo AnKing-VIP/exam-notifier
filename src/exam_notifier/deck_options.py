@@ -66,21 +66,14 @@ class WebContentInjector:
         js_path = source_folder / f"{web_files_name_stem}.js"
         patreon_svg_path = source_folder / "patreon.svg"
 
-        with patreon_svg_path.open() as patreon_svg_file:
-            patreon_svg = patreon_svg_file.read()
-        with html_path.open() as html_file:
-            html = html_file.read()
-            html = html.replace(self._patreon_svg_placeholder, patreon_svg)
-        with js_path.open() as js_file:
+        svelte_path = source_folder / "svelte.js"
+
+        with svelte_path.open() as js_file:
             js = js_file.read()
-
-        self._js = js.replace(self._html_placeholder, json.dumps(html))
-
+        self._js = js
+        
     def inject(self, web_view: AnkiWebView, settings: ExamSettings):
         js = self._js
-        js = js.replace(self._enabled_placeholder, json.dumps(settings.enabled))
-        js = js.replace(self._name_placeholder, json.dumps(settings.exam_name))
-        js = js.replace(self._date_placeholder, json.dumps(settings.exam_date))
         web_view.eval(js)
 
 
