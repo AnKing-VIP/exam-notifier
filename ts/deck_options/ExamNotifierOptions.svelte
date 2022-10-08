@@ -1,19 +1,27 @@
 <script lang="ts">
   import PatreonIcon from "./patreon.svg";
-  import type { AddonData } from "./types";
+  import {
+    type AuxData,
+    type ExamSettings,
+    defaultExamSettings,
+  } from "./types";
 
-  export let data: Record<string, unknown>;
+  export let data: AuxData;
 
   let dateInput: HTMLInputElement;
-  let addonData: AddonData;
+  let examSettings: ExamSettings;
+
+  function dateIsValid(epochSeconds: number) {
+    return epochSeconds >= Date.now();
+  }
 
   function onDateInputChange(ev: Event) {
     const target = ev.target as HTMLInputElement;
     const epoch_seconds = Math.round(target.valueAsNumber / 1000);
-    addonData["exam_date"] = epoch_seconds;
+    examSettings["exam_date"] = epoch_seconds;
 
-    if (addonData["exam_date"] != epoch_seconds) {
-      addonData["exam_date"] = epoch_seconds;
+    if (examSettings.exam_date != epoch_seconds) {
+      examSettings.exam_date = epoch_seconds;
     }
   }
 
@@ -21,8 +29,20 @@
     pycmd(`exam_notifier:deck_options:open_link:${key}`);
   }
 
-  $: addonData = data["exam_settings"] as AddonData;
-  $: if (dateInput) dateInput.valueAsNumber = addonData["exam_date"] * 1000;
+  function getExamSettings(auxData: AuxData): ExamSettings {
+    if (auxData.exam_settings === undefined) {
+      auxData.exam_settings = defaultExamSettings();
+    }
+    let settings = auxData.exam_settings;
+
+    if (settings.exam_date == undefined || !dateIsValid(settings.exam_date)) {
+      settings.exam_date = Math.round(Date.now() / 1000);
+    }
+    return settings as ExamSettings;
+  }
+
+  $: examSettings = getExamSettings(data);
+  $: if (dateInput) dateInput.valueAsNumber = examSettings.exam_date * 1000;
 </script>
 
 <div>
@@ -31,18 +51,18 @@
     <input
       id="en-exam-enabled"
       type="checkbox"
-      bind:checked={addonData["enabled"]}
+      bind:checked={examSettings["enabled"]}
     />
     <label for="en-exam-enabled">Enable exam notifications for this deck</label>
   </div>
-  <div id="en-main-inputs" class:disabled={!addonData["enabled"]}>
+  <div id="en-main-inputs" class:disabled={!examSettings["enabled"]}>
     <div class="en-row">
       <label for="en-exam-name">Exam name</label>
       <input
         id="en-exam-name"
         type="text"
-        disabled={!addonData["enabled"]}
-        bind:value={addonData["exam_name"]}
+        disabled={!examSettings["enabled"]}
+        bind:value={examSettings["exam_name"]}
       />
     </div>
     <div class="en-row">
@@ -51,7 +71,7 @@
         id="en-exam-date"
         type="date"
         bind:this={dateInput}
-        disabled={!addonData["enabled"]}
+        disabled={!examSettings["enabled"]}
         on:input={onDateInputChange}
       />
     </div>
