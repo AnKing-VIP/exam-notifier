@@ -41,17 +41,12 @@ from weakref import ReferenceType
 
 from aqt import gui_hooks
 
-from anki.decks import DeckId
-from aqt.deckconf import DeckConf
 from aqt.deckoptions import DeckOptionsDialog
 from aqt.webview import AnkiWebView
 from aqt.utils import openLink
 
 if TYPE_CHECKING:
     from aqt.main import AnkiQt
-
-from .deck_config import DeckConfigService, ExamSettings
-
 
 class WebContentInjector:
     def __init__(self, source_folder: Path, web_files_name_stem: str):
@@ -92,27 +87,10 @@ class DeckOptionsPatcher:
             return handled
 
         identifier, context, command, value = message.split(":")
-
+        
+        if identifier != self._pycmd_identifier:
+            return handled
         if context != self._context:
-            return handled
-
-        if self._deck_options_dialog_reference is None:
-            return handled
-
-        deck_options_dialog: Optional[
-            DeckOptionsDialog
-        ] = self._deck_options_dialog_reference()
-
-        if deck_options_dialog is None:
-            return handled
-
-        if self._main_window.col is None:
-            return handled
-
-        deck = getattr(deck_options_dialog, "_deck", None)
-
-        if deck is None:
-            print("Could not access deck attribute in DeckOptions")
             return handled
 
         if command == "open_link":
