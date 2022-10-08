@@ -41,30 +41,21 @@ from weakref import ReferenceType
 
 from aqt import gui_hooks
 
-from anki.decks import DeckId
-from aqt.deckconf import DeckConf
 from aqt.deckoptions import DeckOptionsDialog
 from aqt.webview import AnkiWebView
+from aqt.utils import openLink
 
 if TYPE_CHECKING:
     from aqt.main import AnkiQt
 
-
 class WebContentInjector:
-
-    _html_placeholder = "HTML_CONTENT"
-
     def __init__(self, source_folder: Path, web_files_name_stem: str):
-        html_path = source_folder / f"{web_files_name_stem}.html"
-        js_path = source_folder / f"{web_files_name_stem}.js"
+        svelte_path = source_folder / f"{web_files_name_stem}.js"
 
-        with html_path.open() as html_file:
-            html = html_file.read()
-        with js_path.open() as js_file:
+        with svelte_path.open() as js_file:
             js = js_file.read()
-
-        self._js = js.replace(self._html_placeholder, json.dumps(html))
-
+        self._js = js
+        
     def inject(self, web_view: AnkiWebView):
         web_view.eval(self._js)
 
@@ -83,6 +74,9 @@ class DeckOptionsPatcher:
 
     def on_deck_options_did_load(self, deck_options_dialog: DeckOptionsDialog):
         self._deck_options_dialog_reference = weakref.ref(deck_options_dialog)
+        col = self._main_window.col
+        if col is None:
+            return
         self._web_content_injector.inject(deck_options_dialog.web)
 
     def on_webview_did_receive_js_message(
@@ -92,62 +86,20 @@ class DeckOptionsPatcher:
         if not message.startswith(self._pycmd_identifier):
             return handled
 
-        identifier, context, command = message.split(":")
-
-        if context != self._context or command != "old_options":
+        identifier, context, command, value = message.split(":")
+        
+        if identifier != self._pycmd_identifier:
+            return handled
+        if context != self._context:
             return handled
 
-        if self._deck_options_dialog_reference is None:
-            return handled
-
-        deck_options_dialog: Optional[
-            DeckOptionsDialog
-        ] = self._deck_options_dialog_reference()
-
-        if deck_options_dialog is None:
-            return handled
-
-        if self._main_window.col is None:
-            return handled
-
-        deck = getattr(deck_options_dialog, "_deck", None)
-
-        if deck is None:
-            print("Could not access deck attribute in DeckOptions")
-            return handled
-
-        deck_legacy = self._main_window.col.decks.get(DeckId(deck["id"]))
-
-        if deck_legacy is None:
-            return handled
-
-        deck_options_dialog.close()
-        self._deck_options_dialog_reference = None
-
-        def on_deck_conf_dialog_will_show(deck_conf: DeckConf):
-            tab_widget = deck_conf.form.tabWidget
-
-            exams_tab_index = None
-
-            for index in range(tab_widget.count()):
-                tab_name = tab_widget.tabText(index)
-                if tab_name == "Exams":
-                    exams_tab_index = index
-                    break
-
-            if exams_tab_index is None:
-                return
-
-            tab_widget.setCurrentIndex(exams_tab_index)
-
-        gui_hooks.deck_conf_will_show.append(on_deck_conf_dialog_will_show)
-
-        DeckConf(self._main_window, deck_legacy)
-
-        gui_hooks.deck_conf_will_show.remove(on_deck_conf_dialog_will_show)
-
+        if command == "open_link":
+            if value == "glutanimate":
+                openLink("https://www.patreon.com/glutanimate")
+            elif value == "anking":
+                openLink("https://www.patreon.com/ankingmed")
+            return (True, None)
         return handled
-
 
 class DeckOptionsSubscriber:
     def __init__(self, deck_options_patcher: DeckOptionsPatcher):

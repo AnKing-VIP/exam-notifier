@@ -56,14 +56,21 @@ To build Exam Notifier, you will need to have the latest development build of [A
 pip install --upgrade git+https://github.com/glutanimate/anki-addon-builder.git@v1.0.0-dev.1#egg=aab[qt5,qt6]
 ```
 
+You also need have Node and [yarn](https://yarnpkg.com/getting-started/install) installed.
+
 You can then proceed to build the add-on via:
 
     git clone https://github.com/glutanimate/exam-notifier.git
     cd exam-notifier
     make build
 
-
 For more information on the build process please refer to [`aab`'s documentation](https://github.com/glutanimate/anki-addon-builder/#usage).
+
+### Developing
+
+You can run `make develop` to build into `/src/exam_notifier`, which you can then soft link from `addons21` directory.
+
+Run `yarn dev`, and when you edit an existing ts/svelte file, the files are re-built automatically. (You may still need to restart Anki for the changes to take effect)
 
 ### Contributing
 
