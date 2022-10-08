@@ -63,7 +63,7 @@ class ExamConfigTab(QWidget):
             self._qdatetime_from_epoch(unix_time_now)
         )
         self.form.btnGlutanimate.clicked.connect(
-            lambda: openLink(ADDON.LINKS["bepatron"])
+            lambda: openLink("https://patreon.com/glutanimate")
         )
         self.form.btnAnKing.clicked.connect(
             lambda: openLink("https://patreon.com/ankingmed")

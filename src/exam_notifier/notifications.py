@@ -116,7 +116,7 @@ class CollabContributionDialog(ContribDialog):
 
     def _setupEvents(self):
         self.form.btnGlutanimate.clicked.connect(
-            lambda: openLink(ADDON.LINKS["bepatron"])
+            lambda: openLink("https://patreon.com/glutanimate")
         )
         self.form.btnAnKing.clicked.connect(
             lambda: openLink("https://patreon.com/ankingmed")
