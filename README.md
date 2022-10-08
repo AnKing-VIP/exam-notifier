@@ -11,6 +11,7 @@ Exam Notifier provides users with the ability to be notified about card repetiti
 - [Installation](#installation)
 - [Documentation](#documentation)
 - [Building](#building)
+- [Developing](#developing)
 - [Contributing](#contributing)
 - [License and Credits](#license-and-credits)
 - [Supporting this Project](#supporting-this-project)
@@ -102,18 +103,17 @@ If you enjoy Exam Notifier, please consider supporting our work through one of t
 
 #### Supporting Glutanimate <!-- omit in toc -->
 
+<p align="center"><a href="https://www.patreon.com/glutanimate"><img src="https://glutanimate.com/logos/glutanimate_small.png"></a></p>
+
 <p align="center">Make sure to check out my socials for the latest add-on updates and news:</p>
 
-<p align="center"><a href="https://twitter.com/ankingmed"><img src="https://glutanimate.com/logos/twitter.svg" alt="Twitter bird">@AnKingMed</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.youtube.com/c/theanking"><img src="https://glutanimate.com/logos/youtube.svg" alt="YouTube playbutton"> / The AnKing</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.instagram.com/ankingmed"><img src="https://glutanimate.com/logos/instagram.svg" alt="Instagram"> / @ankingmed</a></p>
+<p align="center"><a href="https://twitter.com/glutanimate"><img src="https://glutanimate.com/logos/twitter.svg" alt="Twitter bird">@Glutanimate</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.youtube.com/c/glutanimate"><img src="https://glutanimate.com/logos/youtube.svg" alt="YouTube playbutton"> / Glutanimate</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.instagram.com/glutanimate"><img src="https://glutanimate.com/logos/instagram.svg" alt="Instagram"> / @Glutanimate</a></p>
 
 <p align="center">Lots of <b>exclusive add-ons</b> and other goodies also await on my Patreon page. Make sure to take a look!:</p>
 
-
-
 <p align="center">
-<a href="https://www.patreon.com/ankingmed" title="❤️ Support me on Patreon"><img src="https://glutanimate.com/logos/patreon_button.svg"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://glutanimate.com/logos/thanks.svg">
+<a href="https://www.patreon.com/glutanimate" title="❤️ Support me on Patreon"><img src="https://glutanimate.com/logos/patreon_button.svg"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://glutanimate.com/logos/thanks.svg">
 </p>
-
 
 <hr>
 
