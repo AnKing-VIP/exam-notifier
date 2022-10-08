@@ -47,4 +47,4 @@ src/*/manifest.json
 # Debugging
 src/*/log.txt
 src/*/debug
-src/exam_notifier/web/svelte.js*
+src/exam_notifier/web/deck_options.js*

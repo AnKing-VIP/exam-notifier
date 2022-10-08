@@ -34,7 +34,7 @@ const entryPoints = ["ts/deck_options/index.js"];
  */
 const options = {
   entryPoints,
-  outfile: "./src/exam_notifier/web/svelte.js",
+  outfile: "./src/exam_notifier/web/deck_options.js",
   format: "iife",
   target: "es6",
   bundle: true,

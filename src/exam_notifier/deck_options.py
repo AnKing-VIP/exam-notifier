@@ -54,27 +54,15 @@ from .deck_config import DeckConfigService, ExamSettings
 
 
 class WebContentInjector:
-
-    _html_placeholder = "HTML_CONTENT"
-    _patreon_svg_placeholder = "PATREON_SVG"
-    _enabled_placeholder = "EXAM_ENABLED"
-    _name_placeholder = "EXAM_NAME"
-    _date_placeholder = "EXAM_DATE"
-
     def __init__(self, source_folder: Path, web_files_name_stem: str):
-        html_path = source_folder / f"{web_files_name_stem}.html"
-        js_path = source_folder / f"{web_files_name_stem}.js"
-        patreon_svg_path = source_folder / "patreon.svg"
-
-        svelte_path = source_folder / "svelte.js"
+        svelte_path = source_folder / f"{web_files_name_stem}.js"
 
         with svelte_path.open() as js_file:
             js = js_file.read()
         self._js = js
         
-    def inject(self, web_view: AnkiWebView, settings: ExamSettings):
-        js = self._js
-        web_view.eval(js)
+    def inject(self, web_view: AnkiWebView):
+        web_view.eval(self._js)
 
 
 class DeckOptionsPatcher:
@@ -82,10 +70,9 @@ class DeckOptionsPatcher:
     _pycmd_identifier = "exam_notifier"
     _context = "deck_options"
 
-    def __init__(self, main_window: "AnkiQt", web_content_injector: WebContentInjector, deck_config_service: DeckConfigService):
+    def __init__(self, main_window: "AnkiQt", web_content_injector: WebContentInjector):
         self._main_window = main_window
         self._web_content_injector = web_content_injector
-        self._deck_config_service = deck_config_service
         self._deck_options_dialog_reference: Optional[
             ReferenceType[DeckOptionsDialog]
         ] = None
@@ -95,9 +82,7 @@ class DeckOptionsPatcher:
         col = self._main_window.col
         if col is None:
             return
-        self._deck_config = col.decks.config_dict_for_deck_id(deck_options_dialog._deck["id"])
-        self._exam_settings = self._deck_config_service.get_settings(deck_config=self._deck_config)
-        self._web_content_injector.inject(deck_options_dialog.web, self._exam_settings)
+        self._web_content_injector.inject(deck_options_dialog.web)
 
     def on_webview_did_receive_js_message(
         self, handled: Tuple[bool, Any], message: str, context: Any
@@ -130,29 +115,13 @@ class DeckOptionsPatcher:
             print("Could not access deck attribute in DeckOptions")
             return handled
 
-        if command == "exam_enabled":
-            enabled = value == "true"
-            self._exam_settings.enabled = enabled 
-            self._save_deck_config()
-            return (True, None)
-        elif command == "exam_name":
-            self._exam_settings.exam_name = value
-            self._save_deck_config()
-            return (True, None)
-        elif command == "exam_date":
-            self._exam_settings.exam_date = int(value)
-            self._save_deck_config()
-            return (True, None)
-        elif command == "open_link":
+        if command == "open_link":
             if value == "glutanimate":
                 openLink("https://www.patreon.com/glutanimate")
             elif value == "anking":
                 openLink("https://www.patreon.com/ankingmed")
             return (True, None)
         return handled
-
-    def _save_deck_config(self):
-        self._deck_config_service.set_settings(self._deck_config, self._exam_settings)
 
 class DeckOptionsSubscriber:
     def __init__(self, deck_options_patcher: DeckOptionsPatcher):
