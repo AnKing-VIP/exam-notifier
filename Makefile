@@ -31,6 +31,7 @@ qt:
 
 # Build ts & svelte
 ts:
+	yarn install
 	yarn run build
 
 # Perform pre-launch steps to run add-on from source
