@@ -1,13 +1,6 @@
-const fs = require("fs");
 const { build } = require("esbuild");
 const sveltePreprocess = require("svelte-preprocess");
 const sveltePlugin = require("esbuild-svelte");
-
-for (const dir of ["../dist", "../dist/web"]) {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-  }
-}
 
 const production = process.env.NODE_ENV === "production";
 const development = process.env.NODE_ENV === "development";
@@ -32,9 +25,8 @@ const watch = development
 
 /**
  * This should point to all entry points for JS add-ons.
- * Each one will create one js and one css file in `../src/dist/web'
  */
-const entryPoints = ["src/svelte/index.js"];
+const entryPoints = ["ts/deck_options/index.js"];
 
 /**
  * Esbuild build options
@@ -48,6 +40,7 @@ const options = {
   bundle: true,
   treeShaking: production,
   sourcemap: !production,
+  minify: production,
   pure: production ? ["console.log", "console.time", "console.timeEnd"] : [],
   watch,
   external: ["svelte"],

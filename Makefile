@@ -29,11 +29,15 @@ manifest:
 qt:
 	aab ui
 
+# Build ts & svelte
+ts:
+	yarn run build
+
 # Perform pre-launch steps to run add-on from source
-develop: qt manifest copy_icons
+develop: qt manifest copy_icons ts
 
 # Build add-on
-build:
+build: ts
 	aab create_dist -d $(DIST_TYPE) $(BUILD_TARGET)
 	aab build_dist -d $(DIST_TYPE) $(BUILD_TARGET)
 	[[ -d icons/optional ]] && cp -aL icons/optional $(DIST_ROOT_PATH)/icons/optional || true
@@ -41,4 +45,4 @@ build:
 	aab package_dist -d $(DIST_TYPE) $(BUILD_TARGET)
 
 .DEFAULT_GOAL: help
-.PHONY: check format help build
+.PHONY: check format help build ts
