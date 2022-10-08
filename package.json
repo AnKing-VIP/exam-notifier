@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production node esbuild.config.js",
-    "dev": "cross-env NODE_ENV=development node esbuild.config.js"
+    "build": "cross-env NODE_ENV=production node esbuild.config.js ./src/exam_notifier/web/deck_options.js",
+    "dev": "cross-env NODE_ENV=development node esbuild.config.js ./src/exam_notifier/web/deck_options.js"
   },
   "devDependencies": {
     "@tsconfig/svelte": "^3.0.0",
