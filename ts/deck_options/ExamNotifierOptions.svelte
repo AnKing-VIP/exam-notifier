@@ -124,10 +124,6 @@
   :global(.night-mode) #en-main-inputs {
     background-color: rgba(255, 255, 255, 0.1);
   }
-  #en-main-inputs.disabled {
-    filter: opacity(0.75);
-    backdrop-filter: opacity(0.9);
-  }
   .en-row {
     margin: 4px 0;
     display: flex;
