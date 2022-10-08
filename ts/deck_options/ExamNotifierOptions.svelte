@@ -1,18 +1,11 @@
 <script lang="ts">
   import PatreonIcon from "./patreon.svg";
-
-  interface AddonData {
-    enabled: boolean;
-    exam_name: string;
-    // unix epoch in seconds
-    exam_date: number;
-  }
+  import type { AddonData } from "./types";
 
   export let data: Record<string, unknown>;
 
   let dateInput: HTMLInputElement;
   let addonData: AddonData;
-  // exam_date:
 
   function onDateInputChange(ev: Event) {
     const target = ev.target as HTMLInputElement;
@@ -22,6 +15,10 @@
     if (addonData["exam_date"] != epoch_seconds) {
       addonData["exam_date"] = epoch_seconds;
     }
+  }
+
+  function openLink(key: string) {
+    pycmd(`exam_notifier:deck_options:open_link:${key}`);
   }
 
   $: addonData = data["exam_settings"] as AddonData;
@@ -38,12 +35,13 @@
     />
     <label for="en-exam-enabled">Enable exam notifications for this deck</label>
   </div>
-  <div id="en-main-inputs">
+  <div id="en-main-inputs" class:disabled={!addonData["enabled"]}>
     <div class="en-row">
       <label for="en-exam-name">Exam name</label>
       <input
         id="en-exam-name"
         type="text"
+        disabled={!addonData["enabled"]}
         bind:value={addonData["exam_name"]}
       />
     </div>
@@ -53,6 +51,7 @@
         id="en-exam-date"
         type="date"
         bind:this={dateInput}
+        disabled={!addonData["enabled"]}
         on:input={onDateInputChange}
       />
     </div>
@@ -67,6 +66,7 @@
         id="en-btn-glutanimate"
         class="btn"
         title="Become a Patron and receive exclusive content by the AnKing team!"
+        on:click={() => openLink("glutanimate")}
       >
         <span class="en-icon"><PatreonIcon /></span>
         <span>Glutanimate</span>
@@ -75,6 +75,7 @@
         id="en-btn-anking"
         class="btn"
         title="Become a Patron and receive exclusive content by the AnKing team!"
+        on:click={() => openLink("anking")}
       >
         <span class="en-icon"><PatreonIcon /></span>
         <span>AnKing</span>
@@ -103,7 +104,7 @@
   :global(.night-mode) #en-main-inputs {
     background-color: rgba(255, 255, 255, 0.1);
   }
-  #en-main-inputs:global(.disabled) {
+  #en-main-inputs.disabled {
     filter: opacity(0.75);
     backdrop-filter: opacity(0.9);
   }
@@ -124,25 +125,26 @@
     gap: 16px;
     margin: 18px auto;
   }
-  .en-buttons > button {
+  .en-buttons button {
     flex: 1 1;
 
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
-
+  }
+  button {
     background-color: white;
     border: 1px solid #ced4da;
   }
-  :global(.night-mode) .en-buttons > button {
+  :global(.night-mode) button {
     background-color: #3a3a3a;
     border: 1px solid #777;
   }
-  .en-buttons > button:hover {
+  button:hover {
     backdrop-filter: brightness(0.9);
   }
-  :global(.night-mode) .en-buttons > button:hover {
+  :global(.night-mode) button:hover {
     backdrop-filter: brightness(1.1);
   }
 </style>
