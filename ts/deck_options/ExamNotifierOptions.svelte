@@ -64,7 +64,7 @@
       <button
         id="en-btn-glutanimate"
         class="btn"
-        title="Become a Patron and receive exclusive content by the AnKing team!"
+        title="Become a Patron and receive exclusive add-ons & other goodies by Glutanimate!"
         on:click={() => openLink("glutanimate")}
       >
         <span class="en-icon"><PatreonIcon /></span>
