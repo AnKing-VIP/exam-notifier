@@ -1,5 +1,5 @@
-import ExamNotifierOptions from "./ExamNotifierOptions.svelte";
+import DeckOptionsAddon from "./DeckOptionsAddon.svelte";
 
 $deckOptions.then((deckOptions) => {
-  deckOptions.addSvelteAddon({ component: ExamNotifierOptions });
+  deckOptions.addSvelteAddon({ component: DeckOptionsAddon });
 });

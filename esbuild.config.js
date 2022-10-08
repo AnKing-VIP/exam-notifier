@@ -41,7 +41,6 @@ const options = {
   treeShaking: production,
   sourcemap: !production,
   minify: production,
-  pure: production ? ["console.log", "console.time", "console.timeEnd"] : [],
   watch,
   external: ["svelte"],
   plugins: [
