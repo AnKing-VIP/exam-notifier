@@ -2,13 +2,15 @@
 
 All notable changes to [Exam Notifier](https://ankiweb.net/shared/info/) will be documented here. You can click on each release number to be directed to a detailed log of all code commits for that particular release. The download links will direct you to the GitHub release page, allowing you to manually install a release if you want.
 
-If you enjoy Exam Notifier, please consider supporting my work on Patreon.
+If you enjoy Exam Notifier, please consider supporting our work, so we can keep working on projects like this:
 
-<p align="center">
-<a href="https://www.patreon.com/ankingmed" rel="nofollow" title="Support me on Patreon 😄"><img src="https://glutanimate.com/logos/patreon_button.svg"></a>
-</p>
 
-:heart: My heartfelt thanks goes out to everyone who has supported this add-on through their tips, contributions, or any other means (you know who you are!). All of this would not have been possible without you. Thank you for being awesome!
+|                                                                                                AnKing                                                                                                 |                                                                                                     Glutanimate                                                                                                     |
+| :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| <a href="https://www.patreon.com/ankingmed" rel="nofollow" title="Become a Patron and receive exclusive content by the AnKing team!"><img src="https://glutanimate.com/logos/patreon_button.svg"></a> | <a href="https://www.patreon.com/glutanimate" rel="nofollow" title="Become a Patron and receive exclusive add-ons & other goodies by Glutanimate!"><img src="https://glutanimate.com/logos/patreon_button.svg"></a> |
+
+
+Each contribution is greatly appreciated and will help us <b>update and improve</b> Exam Notifier as time goes by. Thank you!
 
 ## [Unreleased]
 
