@@ -2,7 +2,7 @@
 
 ![](./screenshots/notification.png)
 
-Exam Notifier provides users with the ability to be notified about card repetitions falling behind an upcoming exam date, allowing them to reschedule the card if deemed necessary.
+Exam Notifier provides users with notifications that a card will appear after an upcoming exam date. This feature allows the user to determine how to answer the card (i.e. Again, Hard, Good, Easy) or determine if rescheduling the card is deemed necessary. For example, a user may struggle with a particular subject and despite their ability to answer the card correctly, that they would like to revist these cards on the days leading up to their exam.
 
 ### Table of Contents <!-- omit in toc -->
 
