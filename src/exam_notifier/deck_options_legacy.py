@@ -66,7 +66,7 @@ class ExamConfigTab(QWidget):
             lambda: openLink("https://patreon.com/glutanimate")
         )
         self.form.btnAnKing.clicked.connect(
-            lambda: openLink("https://patreon.com/ankingmed")
+            lambda: openLink("https://www.ankipalace.com/memberships")
         )
         for button in (self.form.btnGlutanimate, self.form.btnAnKing):
             icon = asset_provider.get_icon("icons/patreon.svg")

@@ -119,7 +119,7 @@ class CollabContributionDialog(ContribDialog):
             lambda: openLink("https://patreon.com/glutanimate")
         )
         self.form.btnAnKing.clicked.connect(
-            lambda: openLink("https://patreon.com/ankingmed")
+            lambda: openLink("https://www.ankipalace.com/memberships")
         )
 
 
