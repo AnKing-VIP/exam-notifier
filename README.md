@@ -4,6 +4,8 @@
 
 Exam Notifier provides users with notifications that a card will appear after an upcoming exam date. This feature allows the user to determine how to answer the card (i.e. Again, Hard, Good, Easy) or determine if rescheduling the card is deemed necessary. For example, a user may struggle with a particular subject and despite their ability to answer the card correctly, that they would like to revist these cards on the days leading up to their exam.
 
+Many of us use Anki to prepare for exams. Some of us use Anki to learn a language in preparation for a trip to another country. Exam Notifier will tell you which cards are set to reappear after your test date. For example, if my big exam is coming up in 27 days and the current card is set to reappear in 28 days, this addon will notify you of this fact and give you the option to reschedule that card to reappear sooner for further review(s).
+
 ### Table of Contents <!-- omit in toc -->
 
 <!-- MarkdownTOC levels="1,2,3" -->
