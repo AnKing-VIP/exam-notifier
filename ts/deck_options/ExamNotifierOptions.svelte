@@ -62,15 +62,6 @@
     </p>
     <div class="en-buttons">
       <button
-        id="en-btn-glutanimate"
-        class="btn"
-        title="Become a Patron and receive exclusive add-ons & other goodies by Glutanimate!"
-        on:click={() => openLink("glutanimate")}
-      >
-        <span class="en-icon"><PatreonIcon /></span>
-        <span>Glutanimate</span>
-      </button>
-      <button
         id="en-btn-anking"
         class="btn"
         title="Become a Patron and receive exclusive content by the AnKing team!"
@@ -78,6 +69,15 @@
       >
         <span class="en-icon"><PatreonIcon /></span>
         <span>AnKing</span>
+      </button>
+      <button
+        id="en-btn-glutanimate"
+        class="btn"
+        title="Become a Patron and receive exclusive add-ons & other goodies by Glutanimate!"
+        on:click={() => openLink("glutanimate")}
+      >
+        <span class="en-icon"><PatreonIcon /></span>
+        <span>Glutanimate</span>
       </button>
     </div>
     <p>

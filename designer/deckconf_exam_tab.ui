@@ -155,7 +155,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QPushButton" name="btnGlutanimate">
+      <widget class="QPushButton" name="btnAnKing">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
          <horstretch>0</horstretch>
@@ -164,10 +164,10 @@
        </property>
        <property name="toolTip">
         <string>Become a Patron and receive 
-exclusive add-ons &amp;&amp; other goodies!</string>
+exclusive add-ons &amp;&amp; other goodies from the AnKing team!</string>
        </property>
        <property name="text">
-        <string>Glutanimate</string>
+        <string>AnKing</string>
        </property>
        <property name="iconSize">
         <size>
@@ -178,7 +178,7 @@ exclusive add-ons &amp;&amp; other goodies!</string>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnAnKing">
+      <widget class="QPushButton" name="btnGlutanimate">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
          <horstretch>0</horstretch>
@@ -187,10 +187,10 @@ exclusive add-ons &amp;&amp; other goodies!</string>
        </property>
        <property name="toolTip">
         <string>Become a Patron and receive 
-exclusive content by the AnKing team!</string>
+exclusive content from Glutanimate!</string>
        </property>
        <property name="text">
-        <string>AnKing</string>
+        <string>Glutanimate</string>
        </property>
        <property name="iconSize">
         <size>
