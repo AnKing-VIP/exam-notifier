@@ -57,7 +57,7 @@
   </div>
   <div>
     <p>
-      Hi there :) ! Enjoy <b>Exam Notifier</b>? Then please consider supporting
+      Hi there :) ! Enjoying <b>Exam Notifier</b>? Please consider supporting
       our work, so we can keep working on projects like this:
     </p>
     <div class="en-buttons">
