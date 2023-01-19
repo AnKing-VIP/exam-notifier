@@ -123,29 +123,6 @@
      <item>
       <layout class="QGridLayout" name="gridLayout">
        <item row="1" column="0">
-        <widget class="QPushButton" name="btnGlutanimate">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="toolTip">
-          <string>Become a Patron and receive 
-exclusive add-ons &amp;&amp; other goodies!</string>
-         </property>
-         <property name="text">
-          <string>Glutanimate</string>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>32</width>
-           <height>32</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
         <widget class="QPushButton" name="btnAnKing">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
@@ -159,6 +136,29 @@ exclusive content by the AnKing team!</string>
          </property>
          <property name="text">
           <string>AnKing</string>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="btnGlutanimate">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Become a Patron and receive 
+exclusive add-ons &amp;&amp; other goodies!</string>
+         </property>
+         <property name="text">
+          <string>Glutanimate</string>
          </property>
          <property name="iconSize">
           <size>
