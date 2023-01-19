@@ -129,7 +129,7 @@
    <item>
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>Hi there :) ! Enjoy &lt;b&gt;Exam Notifier&lt;/b&gt;? Then please consider supporting our work, so we can keep working on projects like this:</string>
+      <string>Hi there :) ! Enjoying &lt;b&gt;Exam Notifier&lt;/b&gt;? Please consider supporting our work, so we can keep working on projects like this:</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
