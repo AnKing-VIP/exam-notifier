@@ -97,7 +97,7 @@ class DeckOptionsPatcher:
             if value == "glutanimate":
                 openLink("https://www.patreon.com/glutanimate")
             elif value == "anking":
-                openLink("https://www.patreon.com/ankingmed")
+                openLink("https://www.ankipalace.com/memberships")
             return (True, None)
         return handled
 
