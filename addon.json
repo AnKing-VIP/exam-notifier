@@ -2,13 +2,13 @@
   "display_name": "Exam Notifier",
   "module_name": "exam_notifier",
   "repo_name": "exam-notifier",
-  "ankiweb_id": "",
+  "ankiweb_id": "236593452",
   "author": "AnKing",
   "contact": "https://ankipalace.com",
   "homepage": "https://ankiweb.net/shared/info/599952588",
   "copyright_start": 2019,
   "tags": "",
-  "conflicts": [],
+  "conflicts": ["exam_notifier"],
   "targets": [
     "qt6",
     "qt5"
