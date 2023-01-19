@@ -103,22 +103,6 @@ If you enjoy Exam Notifier, please consider supporting our work through one of t
 
 <hr>
 
-#### Supporting Glutanimate <!-- omit in toc -->
-
-<p align="center"><a href="https://www.patreon.com/glutanimate"><img src="https://glutanimate.com/logos/glutanimate_small.png"></a></p>
-
-<p align="center">Make sure to check out my socials for the latest add-on updates and news:</p>
-
-<p align="center"><a href="https://twitter.com/glutanimate"><img src="https://glutanimate.com/logos/twitter.svg" alt="Twitter bird">@Glutanimate</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.youtube.com/c/glutanimate"><img src="https://glutanimate.com/logos/youtube.svg" alt="YouTube playbutton"> / Glutanimate</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.instagram.com/glutanimate"><img src="https://glutanimate.com/logos/instagram.svg" alt="Instagram"> / @Glutanimate</a></p>
-
-<p align="center">Lots of <b>exclusive add-ons</b> and other goodies also await on my Patreon page. Make sure to take a look!:</p>
-
-<p align="center">
-<a href="https://www.patreon.com/glutanimate" title="❤️ Support me on Patreon"><img src="https://glutanimate.com/logos/patreon_button.svg"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://glutanimate.com/logos/thanks.svg">
-</p>
-
-<hr>
-
 #### Supporting AnKing <!-- omit in toc -->
 
 
@@ -141,5 +125,21 @@ If you enjoy Exam Notifier, please consider supporting our work through one of t
 <a href="https://courses.ankipalace.com/?utm_source=anking_bg_add-on&amp;utm_medium=anki_add-on_page&amp;utm_campaign=mastery_course" rel="nofollow">
   <br>
   <img src="https://raw.githubusercontent.com/AnKingMed/My-images/master/AnKing/AnkiPalace.png?raw=true"></a></p>
+
+<hr>
+
+#### Supporting Glutanimate <!-- omit in toc -->
+
+<p align="center"><a href="https://www.patreon.com/glutanimate"><img src="https://glutanimate.com/logos/glutanimate_small.png"></a></p>
+
+<p align="center">Make sure to check out my socials for the latest add-on updates and news:</p>
+
+<p align="center"><a href="https://twitter.com/glutanimate"><img src="https://glutanimate.com/logos/twitter.svg" alt="Twitter bird">@Glutanimate</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.youtube.com/c/glutanimate"><img src="https://glutanimate.com/logos/youtube.svg" alt="YouTube playbutton"> / Glutanimate</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.instagram.com/glutanimate"><img src="https://glutanimate.com/logos/instagram.svg" alt="Instagram"> / @Glutanimate</a></p>
+
+<p align="center">Lots of <b>exclusive add-ons</b> and other goodies also await on my Patreon page. Make sure to take a look!:</p>
+
+<p align="center">
+<a href="https://www.patreon.com/glutanimate" title="❤️ Support me on Patreon"><img src="https://glutanimate.com/logos/patreon_button.svg"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</p>
 
 <hr>
