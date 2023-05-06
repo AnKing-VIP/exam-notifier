@@ -67,7 +67,7 @@ class ADDON:
     MEMBERS_CREDITED = MEMBERS_CREDITED
     MEMBERS_TOP = MEMBERS_TOP
     LINKS = {
-        "patreon": "https://www.ankipalace.com/memberships",
+        "patreon": "https://www.theanking.com/anking-memberships",
         "bepatron": "https://www.patreon.com/bePatron?u=26957953",
         "coffee": "http://ko-fi.com/glutanimate",
         "description": "https://ankiweb.net/shared/info/{}".format(ID),
