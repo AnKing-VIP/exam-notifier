@@ -43,11 +43,10 @@ from .deck_config import ExamSettings
 from .libaddon.gui.notifications import (
     FocusBehavior,
     Notification,
-    NotificationHAlignment,
     NotificationService,
     NotificationSettings,
 )
-
+from .config import horizontal_alignment_from_config, vertical_alignment_from_config
 
 def maybe_pluralize(count: float, term: str) -> str:
     return term + "s" if abs(count) > 1 else term
@@ -166,7 +165,8 @@ class NotificationServiceAdapter:
     ):
         if not notification_settings:
             notification_settings = NotificationSettings(
-                align_horizontal=NotificationHAlignment.center,
+                align_horizontal=horizontal_alignment_from_config(),
+                align_vertical=vertical_alignment_from_config(),
                 space_vertical=100,
                 bg_color="#fdf0d5",
                 fg_color="#003049",

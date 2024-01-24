@@ -1,0 +1,2 @@
+- `notification_horizontal_alignment`: Horizontal placement of the notification tooltip. Possible values: `left`, `center`, `right`.
+- `notification_vertical_alignment`: Vertical placement of the notification tooltip. Possible values: `top`, `center`, `bottom`.
