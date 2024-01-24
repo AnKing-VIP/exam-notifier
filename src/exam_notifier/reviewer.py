@@ -33,7 +33,6 @@
 from datetime import datetime, timedelta
 from typing import TYPE_CHECKING
 
-from anki.consts import QUEUE_TYPE_REV
 from aqt.qt import QObject, pyqtSlot
 from aqt.utils import showWarning
 
@@ -62,9 +61,6 @@ class ReviewService(QObject):
         self._notification_service_adapter = notification_service_adapter
 
     def on_reviewer_did_show_answer(self, card: "Card"):
-        if card.queue != QUEUE_TYPE_REV:  # not a review
-            return
-
         exam_settings = self._deck_config_service.get_settings_for_did(
             card.odid or card.did
         )
