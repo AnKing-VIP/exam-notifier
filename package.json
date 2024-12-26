@@ -4,18 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production node esbuild.config.js ./src/exam_notifier/web/deck_options.js",
-    "dev": "cross-env NODE_ENV=development node esbuild.config.js ./src/exam_notifier/web/deck_options.js"
+    "build": "cross-env NODE_ENV=production node build.mjs ./src/exam_notifier/web/deck_options.js",
+    "dev": "cross-env NODE_ENV=development node build.mjs ./src/exam_notifier/web/deck_options.js"
   },
   "devDependencies": {
-    "@tsconfig/svelte": "^3.0.0",
+    "@tsconfig/svelte": "^5.0.4",
     "cross-env": "^7.0.3",
-    "esbuild": "^0.15.10",
-    "esbuild-svelte": "^0.7.1",
-    "svelte-preprocess": "^4.10.7",
-    "typescript": "^4.8.4"
-  },
+    "esbuild": "^0.24",
+    "esbuild-svelte": "^0.9",
+    "svelte-preprocess": "^6",
+    "typescript": "^5.0.4"
+},
   "dependencies": {
-    "svelte": "3.46.4"
+    "svelte": "5.0.0"
   }
 }
