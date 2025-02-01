@@ -67,7 +67,7 @@
         title="Become a Patron and receive exclusive content by the AnKing team!"
         on:click={() => openLink("anking")}
       >
-        <span class="en-icon"><PatreonIcon /></span>
+        <span class="en-icon">{@html PatreonIcon}</span>
         <span>AnKing</span>
       </button>
       <button
@@ -76,7 +76,7 @@
         title="Become a Patron and receive exclusive add-ons & other goodies by Glutanimate!"
         on:click={() => openLink("glutanimate")}
       >
-        <span class="en-icon"><PatreonIcon /></span>
+        <span class="en-icon">{@html PatreonIcon}</span>
         <span>Glutanimate</span>
       </button>
     </div>
