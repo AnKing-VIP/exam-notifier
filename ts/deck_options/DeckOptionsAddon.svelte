@@ -1,38 +1,46 @@
 <script lang="ts">
-  import {
-    type AuxData,
-    type ExamSettings,
-    defaultExamSettings,
-  } from "./types";
+   import type { Writable } from "svelte/store";
+   import {onMount} from "svelte";
 
-  import ExamNotifierOptions from "./ExamNotifierOptions.svelte";
+   import {
+     type AuxData,
+     type ExamSettings,
+     defaultExamSettings,
+   } from "./types";
 
-  export let data: AuxData;
+   import ExamNotifierOptions from "./ExamNotifierOptions.svelte";
 
-  let examSettings: ExamSettings;
+   export let data: Writable<AuxData>;
 
-  function getExamSettings(auxData: AuxData): ExamSettings {
-    if (auxData.exam_settings === undefined) {
-      auxData.exam_settings = defaultExamSettings();
-    }
-    let settings = auxData.exam_settings;
-    const now = Date.now() / 1000;
+   let examSettings: ExamSettings = getExamSettings($data);
 
-    if (settings.exam_date === undefined || settings.exam_date < now) {
-      settings.exam_date = now;
-    }
+   function getExamSettings(auxData: AuxData): ExamSettings {
+     if (auxData.exam_settings === undefined) {
+       auxData.exam_settings = defaultExamSettings();
+     }
+     let settings = auxData.exam_settings;
+     const now = Date.now() / 1000;
 
-    return settings as ExamSettings;
-  }
+     if (settings.exam_date === undefined || settings.exam_date < now) {
+       settings.exam_date = now;
+     }
 
-  function onExamSettingsChange(settings: ExamSettings) {
-    // if data was already updated this tick, update isn't re-triggered.
-    // So there is no infinite loop.
-    data = data;
-  }
+     return settings as ExamSettings;
+   }
 
-  $: examSettings = getExamSettings(data);
-  $: onExamSettingsChange(examSettings);
-</script>
+   function onExamSettingsChange(settings: ExamSettings) {
+     data.update((d) => {
+       d.exam_settings = settings;
+       return d;
+     });
+   }
 
+   $: onExamSettingsChange(examSettings);
+
+   onMount(() => {
+     data.subscribe((d) => {
+       examSettings = getExamSettings(d);
+     });
+   });
+ </script>
 <ExamNotifierOptions bind:examSettings />

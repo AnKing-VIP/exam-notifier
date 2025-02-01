@@ -1,5 +1,4 @@
 import { mount } from "svelte";
-import { get } from "svelte/store";
 
 import DeckOptionsAddon from "./DeckOptionsAddon.svelte";
 
@@ -15,7 +14,7 @@ $deckOptions.then((deckOptions) => {
         }
         mount(DeckOptionsAddon, {
             target: target,
-            props: { data: get(deckOptions.auxData()) },
+            props: { data: deckOptions.auxData() },
         });
     }, 100);
 });

@@ -28,12 +28,10 @@ const options = {
     treeShaking: production,
     sourcemap: !production,
     pure: production ? ["console.log", "console.time", "console.timeEnd"] : [],
-    // external: ["svelte"],
     plugins: [
       sveltePlugin({
         compilerOptions: { css: 'injected'},
         preprocess: sveltePreprocess(),
-        // include: /\.(?:svelte)|(?:svg)$/,
       }),
     ],
     loader: { ".svg": "text" },
