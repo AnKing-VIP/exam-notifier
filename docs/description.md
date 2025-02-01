@@ -5,7 +5,7 @@ Exam Notifier is an add-on for Anki.
 ### CREDITS AND LICENSE
 
 *Copyright © 2019-2022 [Aristotelis P.](https://glutanimate.com/)  (Glutanimate)*
-*Copyright © 2022 [AnKingMed](https://ankipalace.com/)*
+*Copyright © 2022 [AnKingMed](https://www.theanking.com/)*
 
 All credits for the original idea for this add-on go to to [The AnKing](https://www.ankingmed.com/).
 
