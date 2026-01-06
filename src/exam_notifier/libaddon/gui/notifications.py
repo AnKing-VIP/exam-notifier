@@ -304,5 +304,5 @@ class Notification(QLabel):
             raise ValueError(f"Alignment value {align_vertical} is not supported")
 
         self.move(
-            self.parent().mapToGlobal(QPoint(x, y))  # type:ignore
+            self.parent().mapToGlobal(QPoint(int(x), int(y)))  # type:ignore
         )
